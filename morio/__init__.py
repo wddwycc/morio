@@ -1,6 +1,9 @@
+import os
+
 from flask import Flask
-from . import routes
+
 from . import model
+from . import routes
 
 
 def create_app():
@@ -8,8 +11,10 @@ def create_app():
     routes.init_app(app)
     model.init_app(app)
 
-    import os
-
-    dev_config = os.path.join(app.root_path, '../conf/dev_settings.py')
+    dev_config = os.path.join(app.root_path, '../conf/base_settings.py')
     app.config.from_pyfile(dev_config)
+
+    local_settings = os.path.join(app.root_path, '../local_settings.py')
+    app.config.from_pyfile(local_settings)
+
     return app

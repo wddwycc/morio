@@ -1,4 +1,4 @@
-require('./css/normalize.css')
+import './css/normalize.css'
 
 import Vue from 'vue'
 import App from './App.vue'

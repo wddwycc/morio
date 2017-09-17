@@ -44,6 +44,8 @@ module.exports = {
     new ExtractTextPlugin({
       filename: '[name].css', disable: false, allChunks: true
     }),
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../fn/index.ejs')
+    }),
   ],
 }
