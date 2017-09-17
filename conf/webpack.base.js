@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: '[name].js',
+    filename: '[name].[hash].js',
   },
   module: {
     rules: [
@@ -42,7 +42,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name].css', disable: false, allChunks: true
+      filename: '[name].[contenthash].css', disable: false, allChunks: true
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../fn/index.ejs')
