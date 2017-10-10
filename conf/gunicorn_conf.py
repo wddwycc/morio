@@ -1,4 +1,4 @@
-bind = '127.0.0.1:<port>'
+bind = '127.0.0.1:8018'
 
 timeout = 30
 max_requests = 1000

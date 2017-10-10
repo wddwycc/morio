@@ -7,6 +7,9 @@ config.devServer = {
   headers: {
     'Access-Control-Allow-Origin': '*'
   },
+  proxy: {
+    "/api": "http://localhost:5000"
+  }
 }
 
 config.plugins = config.plugins.concat(

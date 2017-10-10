@@ -1,0 +1,12 @@
+[Unit]
+Description=web service for memory
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/code/morio
+Environment="PATH=/var/venv/morio/bin"
+ExecStart=/var/venv/morio/bin/gunicorn -c /code/morio/conf/gunicorn_conf.py wsgi:app
+
+[Install]
+WantedBy=multi-user.target
