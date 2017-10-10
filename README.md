@@ -8,7 +8,7 @@ web service for memory ( under development )
 
 * webpack
 * vue.js
-* element.io
+* element ui
 
 ### back-end
 
@@ -25,10 +25,18 @@ web service for memory ( under development )
 $ npm install
 ```
 
+Create `local_settings.py`, fill it with
+
+```python
+DEBUG = True
+SQLALCHEMY_DATABASE_URI = ''
+```
+
 ```
 $ virtualenv venv -p <python_version>
 $ . venv/bin/activate
 $ pip install -r requirements.txt
+$ python manage.py db upgrade
 ```
 
 ## run webpack dev server
@@ -38,8 +46,6 @@ npm run dev
 ```
 
 ## run flask server
-
-Add your flask settings in `conf/dev_settings.py`. Then run
 
 ```
 python manage.py run

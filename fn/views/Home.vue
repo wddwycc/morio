@@ -1,5 +1,8 @@
 <template>
-  <input v-model="msg">
+  <div>
+    <el-button type="primary">主要按钮</el-button>
+    <input v-model="msg">
+  </div>
 </template>
 
 <script>
