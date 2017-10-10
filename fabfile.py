@@ -16,7 +16,7 @@ def update_flask():
 
 def update_fn():
     local('npm run prod')
-    put('dist/*', '/var/www/morio.monk-studio.com')
+    put('dist/*', '/var/www/morio')
 
 
 def publish():
