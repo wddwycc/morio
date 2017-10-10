@@ -1,16 +1,3 @@
 <template>
-<div id="app">
-  <p>{{ msg }}</p>
-</div>
+  <router-view></router-view>
 </template>
-
-<script>
-export default {
-  name: 'app',
-  data() {
-    return {
-      msg: 'hello world'
-    }
-  }
-}
-</script>
