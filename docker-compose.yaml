@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  db:
+    restart: always
+    image: sameersbn/postgresql:9.6-2
+    environment:
+      - DEBUG=true
+      - DB_USER=morio
+      - DB_PASS=pw
+      - DB_NAME=morio
+    ports:
+      - '5432:5432'

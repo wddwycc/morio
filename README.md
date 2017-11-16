@@ -13,7 +13,7 @@ web service for memory ( under development )
 ### back-end
 
 * flask
-* mysql
+* postgresql
 
 ### others
 
