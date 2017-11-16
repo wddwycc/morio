@@ -10,14 +10,4 @@ services:
       - DB_PASS=pw
       - DB_NAME=morio
     ports:
-      - '5432:5432'
-
-  webpack_dev_server:
-    build:
-      context: .
-      dockerfile: Dockerfile-webpack
-    command: npm run dev
-    volumes:
-      - .:/code
-    ports:
-      - 8088:8088
+      - 5432:5432
