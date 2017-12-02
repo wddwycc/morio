@@ -18,6 +18,7 @@ web service for memory ( under development )
 ### others
 
 * [tifa](https://github.com/wddwycc/tifa)
+* [pyenv](https://github.com/kennethreitz/pipenv)
 
 ## setup
 

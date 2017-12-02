@@ -8,9 +8,9 @@ env.hosts = ['duan-p0']
 def update_flask():
     with cd('/code/morio'):
         run('git pull origin master')
-        run('/var/venv/morio/bin/pip install -r requirements.txt')
-        run('sudo systemctl stop morio.service')
+        run('pipenv install')
         run('/var/venv/morio/bin/python manage.py db upgrade')
+        run('sudo systemctl stop morio.service')
         run('sudo systemctl start morio.service')
 
 
@@ -19,6 +19,6 @@ def update_fn():
     put('dist/*', '/var/www/morio')
 
 
-def publish():
-    update_flask()
+def deploy():
     update_fn()
+    update_flask()
