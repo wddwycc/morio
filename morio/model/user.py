@@ -28,7 +28,7 @@ class User(db.Model):
         DateTime, default=datetime.now, onupdate=datetime.now, nullable=False
     )
 
-    # MARK: Password util
+    # MARK: Password
     @property
     def password(self):
         return self._password

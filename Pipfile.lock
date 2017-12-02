@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "06012d3f56f359d187f6257d40e62ea01f9f05988c5289e676eee86e300c7dec"
+            "sha256": "592ce13379950eddaafde85d93acabdc5ed8de153b3ec07a5b7a66efaf807961"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -18,7 +18,7 @@
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.6"
+            "python_version": "3"
         },
         "sources": [
             {
@@ -110,7 +110,6 @@
                 "sha256:75e1de9ba7c155d89bcf67d149b1c741df553c8158536e8d27e63167403159af",
                 "sha256:ab87dd91c0c4073758d07334c1e5f712ce8fe48f007b86f8238773963ee700a6"
             ],
-            "markers": "platform_python_implementation != 'PyPy'",
             "version": "==1.11.2"
         },
         "click": {
@@ -147,16 +146,6 @@
                 "sha256:e4d967371c5b6b2e67855066471d844c5d52d210c36c28d49a8507b96e2c5291"
             ],
             "version": "==2.1.4"
-        },
-        "enum34": {
-            "hashes": [
-                "sha256:6bd0f6ad48ec2aa117d3d141940d484deccda84d4fcd884f5c3d93c23ecd8c79",
-                "sha256:644837f692e5f550741432dd3f223bbb9852018674981b1664e5dc339387588a",
-                "sha256:8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1",
-                "sha256:2d81cbbe0e73112bdfe6ef8576f2238f2ba27dd0d55752a776c41d38b7da2850"
-            ],
-            "markers": "python_version < '3'",
-            "version": "==1.1.6"
         },
         "fabric3": {
             "hashes": [
@@ -199,14 +188,6 @@
                 "sha256:2c6a5de3089009e3da7c5dde64a141dbc8551d5b7f6cf4ed7c2568d0cc520a8f"
             ],
             "version": "==2.6"
-        },
-        "ipaddress": {
-            "hashes": [
-                "sha256:d34cf15d95ce9a734560f7400a8bd2ac2606f378e2a1d0eadbf1c98707e7c74a",
-                "sha256:5d8534c8e185f2d8a1fda1ef73f2c8f4b23264e8e30063feeb9511d492a413e1"
-            ],
-            "markers": "python_version < '3'",
-            "version": "==1.0.18"
         },
         "itsdangerous": {
             "hashes": [

@@ -24,6 +24,8 @@ web service for memory ( under development )
 
 ```
 $ npm install
+$ pipenv install
+$ python manage.py db upgrade
 ```
 
 Create `local_settings.py`, fill it with
@@ -33,21 +35,10 @@ DEBUG = True
 SQLALCHEMY_DATABASE_URI = ''
 ```
 
-```
-$ virtualenv venv -p <python_version>
-$ . venv/bin/activate
-$ pip install -r requirements.txt
-$ python manage.py db upgrade
-```
-
-## run webpack dev server
+## run dev server
 
 ```
-npm run dev
-```
-
-## run flask server
-
-```
-python manage.py run
+$ docker-compose up
+$ npm run dev
+$ python manage.py run
 ```
