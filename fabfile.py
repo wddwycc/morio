@@ -9,7 +9,7 @@ def update_flask():
     with cd('/code/morio'):
         run('git pull origin master')
         run('pipenv install')
-        run('/var/venv/morio/bin/python manage.py db upgrade')
+        run('pipenv run python manage.py db upgrade')
         run('sudo systemctl stop morio.service')
         run('sudo systemctl start morio.service')
 
