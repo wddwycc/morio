@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=ubuntu
 WorkingDirectory=/code/morio
-ExecStart=pipenv run gunicorn -c /code/morio/conf/gunicorn_conf.py wsgi:app
+ExecStart=/usr/local/bin/pipenv run gunicorn -c /code/morio/conf/gunicorn_conf.py wsgi:app
 
 [Install]
 WantedBy=multi-user.target

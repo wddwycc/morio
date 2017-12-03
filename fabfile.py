@@ -10,8 +10,7 @@ def update_flask():
         run('git pull origin master')
         run('pipenv install')
         run('pipenv run python manage.py db upgrade')
-        run('sudo systemctl stop morio.service')
-        run('sudo systemctl start morio.service')
+        run('sudo systemctl restart morio.service')
 
 
 def update_fn():
