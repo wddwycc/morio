@@ -12,7 +12,7 @@ def login_required(f):
         if not token:
             return APIError.NO_AUTH.json, 401
         try:
-            user_id = User.check_auth_token(token)
+            user_id = User.verify_auth_token(token)
         except (DecodeError, InvalidTokenError):
             return APIError.AUTH_FAILED.json, 401
         except ExpiredSignatureError:

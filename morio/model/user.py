@@ -18,8 +18,8 @@ class User(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     role = Column(SmallInteger, nullable=False)
     name = Column(String(30), nullable=False, index=True, unique=True)
-    email = Column(String(200), nullable=False, unique=True)
     nickname = Column(String(30), nullable=False, index=True)
+    email = Column(String(200), nullable=False, unique=True)
 
     _password = Column('password', String(100), nullable=False)
 
@@ -27,6 +27,13 @@ class User(db.Model):
     updated_at = Column(
         DateTime, default=datetime.now, onupdate=datetime.now, nullable=False
     )
+
+    def to_dict(self):
+        return dict(
+            name=self.name,
+            nickname=self.nickname,
+            email=self.email,
+        )
 
     # MARK: Password
     @property
@@ -37,7 +44,7 @@ class User(db.Model):
     def password(self, raw):
         self._password = generate_password_hash(raw)
 
-    def check_password(self, raw):
+    def verify_password(self, raw):
         if not self._password:
             return False
         return check_password_hash(self._password, raw)
@@ -49,11 +56,15 @@ class User(db.Model):
             'exp': datetime.utcnow() + timedelta(days=10),
             'sub': self.id
         }
-        return jwt.encode(payload, key=secret_key, algorithm='HS256') \
+        token = jwt.encode(payload, key=secret_key, algorithm='HS256') \
             .decode('utf-8')
+        return 'Bearer ' + token
 
     @staticmethod
-    def check_auth_token(auth_token):
+    def verify_auth_token(auth_token):
+        if not auth_token.startswith('Bearer '):
+            raise jwt.InvalidTokenError
+        auth_token = auth_token[7:]
         secret_key = current_app.config.get('SECRET_KEY')
         try:
             payload = jwt.decode(
@@ -64,3 +75,5 @@ class User(db.Model):
             return payload['sub']
         except Exception as e:
             raise e
+
+    # TODO: mail related token

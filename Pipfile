@@ -19,6 +19,8 @@ flask-alembic = "*"
 "fabric3" = "*"
 pyjwt = "*"
 gunicorn = "*"
+voluptuous = "*"
 
 
 [requires]
+
