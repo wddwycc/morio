@@ -4,14 +4,13 @@ import jwt
 from flask import current_app
 from sqlalchemy import Column, DateTime
 from sqlalchemy import Integer, SmallInteger, String
+from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from .base import db
+from morio.model import db
 
 
 class User(db.Model):
-    __tablename__ = 'user'
-
     ROLE_USER = 0
     ROLE_ADMIN = 1
 
@@ -27,6 +26,8 @@ class User(db.Model):
     updated_at = Column(
         DateTime, default=datetime.now, onupdate=datetime.now, nullable=False
     )
+
+    repositories = relationship('Repository', backref='user', lazy='dynamic')
 
     def to_dict(self):
         return dict(
