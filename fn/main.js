@@ -3,8 +3,8 @@ import './css/normalize.css'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
-import { Button, Menu, MenuItem } from 'element-ui'
 
+import { Button, Menu, MenuItem } from 'element-ui'
 import routerConfig from './views/index'
 
 Vue.use(VueRouter)
