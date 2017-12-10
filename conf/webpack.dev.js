@@ -9,7 +9,8 @@ config.devServer = {
   },
   proxy: {
     "/api": "http://localhost:5000"
-  }
+  },
+  historyApiFallback: true,
 }
 
 config.plugins = config.plugins.concat(

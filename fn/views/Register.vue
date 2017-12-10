@@ -8,7 +8,7 @@
   export default {
     data() {
       return {
-        msg: 'This is login view'
+        msg: 'This is register view'
       }
     }
   }
