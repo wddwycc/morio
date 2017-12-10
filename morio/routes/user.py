@@ -1,11 +1,11 @@
 from flask import Blueprint
-from flask import request, Response, jsonify
+from flask import request, Response
 from voluptuous import Required
 
-from morio.routes.utils import verify_payload, verify_email
 from morio.core.error import APIError
-from morio.model import db
 from morio.model import User
+from morio.model import db
+from morio.routes.utils import verify_payload, verify_email
 
 bp = Blueprint('user', __name__)
 
@@ -25,7 +25,7 @@ def register():
     user = User.query.filter_by(name=payload['name']).first()
     if user:
         return APIError.USERNAME_USED.json, 409
-    user = User.query.filter_by(name=payload['email']).first()
+    user = User.query.filter_by(email=payload['email']).first()
     if user:
         return APIError.EMAIL_USED.json, 409
     user = User(
@@ -37,7 +37,9 @@ def register():
     user.password = payload['password']
     with db.auto_commit():
         db.session.add(user)
-    return jsonify(user.to_dict())
+    response = Response()
+    response.headers['Authorization'] = user.gen_auth_token()
+    return response
 
 
 @bp.route('/login', methods=['POST'])
@@ -57,6 +59,6 @@ def login():
         return APIError.USER_NOT_FOUND.json, 404
     if not user.verify_password(payload['password']):
         return APIError.AUTH_FAILED.json, 403
-    response = Response(jsonify(user.to_dict()))
+    response = Response()
     response.headers['Authorization'] = user.gen_auth_token()
     return response
