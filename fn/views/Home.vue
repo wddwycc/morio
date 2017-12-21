@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="repositories">
-      <el-card class="repository" v-for="repository in repositories">
+      <el-card class="repository" v-for="repository in repositories" :key="item.id">
         <div slot="header" class="repository__name"> {{ repository.name }} </div>
         <div>
           <span class="repository__date"> {{ repository.date }} </span>
@@ -18,11 +18,13 @@
       return {
         repositories: [
           {
+            id: 1,
             name: '英语',
             date: '20171201',
             desc: '英语单词'
           },
           {
+            id: 2,
             name: '日语',
             date: '20171214',
             desc: '日语单词'
