@@ -7,7 +7,7 @@ from morio.model import User
 bp = Blueprint('core', __name__)
 
 
-@bp.route('/<username>')
+@bp.route('/api/repositories')
 def someone(username):
     user = User.query.filter_by(name=username).first()
     if not user:

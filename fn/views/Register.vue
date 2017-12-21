@@ -25,7 +25,6 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex'
   import {Message} from 'element-ui'
   import api from '../api'
 
@@ -45,16 +44,12 @@
       }
     },
     methods: {
-      ...mapActions([
-        'updateAuthToken'
-      ]),
       onSubmit() {
         this.$refs['form'].validate((valid) => {
           if (!valid) {
             return
           }
-          api.register(this.form).then(response => {
-            this.updateAuthToken(response.headers.get('Authorization'))
+          api.register(this.form).then(() => {
             Message.success('Register success')
             this.$router.push('/')
           })
