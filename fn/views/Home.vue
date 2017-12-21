@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="repositories">
-      <el-card class="repository" v-for="repository in repositories" :key="item.id">
-        <div slot="header" class="repository__name"> {{ repository.name }} </div>
+      <el-card class="repository" v-for="repo in repos" :key="repo.id">
+        <div slot="header" class="repository__name"> {{ repo.name }} </div>
         <div>
-          <span class="repository__date"> {{ repository.date }} </span>
-          <span class="repository__desc"> {{ repository.desc }}</span>
+          <span class="repository__date"> {{ repo.date }} </span>
+          <span class="repository__desc"> {{ repo.desc }}</span>
         </div>
       </el-card>
     </div>
@@ -16,7 +16,7 @@
   export default {
     data() {
       return {
-        repositories: [
+        repos: [
           {
             id: 1,
             name: '英语',
