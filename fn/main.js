@@ -12,6 +12,7 @@ import {
   Input,
   Menu,
   MenuItem,
+  Card,
 } from 'element-ui'
 import routerConfig from './views/index'
 import store from './store/index';
@@ -24,6 +25,7 @@ Vue.use(MenuItem)
 Vue.use(Input)
 Vue.use(Form)
 Vue.use(FormItem)
+Vue.use(Card)
 
 const router = new VueRouter(routerConfig);
 

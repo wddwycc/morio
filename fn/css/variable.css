@@ -5,4 +5,13 @@
   --size-small: 14px;
   --size-x-small: 13px;
   --size-xx-small: 12px;
+
+  --color-blue: #409EFF;
+  --color-green: #67C23A;
+  --color-orange: #E6A23C;
+  --color-red: #F56C6C;
+  --color-black: #303133;
+  --color-grey: #606266;
+  --color-light-grey: #909399;
+  --color-x-light-grey: #C0C4CC;
 }
