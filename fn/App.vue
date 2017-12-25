@@ -1,13 +1,14 @@
 <template>
   <div id="app">
     <div class="menu">
-    <ul class="menu--left" >
-        <router-link to="/" tag="li" class="menu__item">Home</router-link>
-    </ul>
-    <ul class="menu--right">
-        <router-link to="/login" tag="li" class="menu__item">Login</router-link>
-        <router-link to="/register" tag="li" class="menu__item">Register</router-link>
-    </ul>
+      <ul class="menu--left">
+        <router-link to="/" tag="li" class="menu__item" exact>Home</router-link>
+      </ul>
+      <ul class="menu--right">
+        <router-link to="/login" tag="li" class="menu__item" exact>Login</router-link>
+        <router-link to="/register" tag="li" class="menu__item" exact>Register</router-link>
+      </ul>
+      <router-link to="/new" tag="li" class="el-icon-plus"></router-link>
     </div>
     <div class="content">
       <router-view></router-view>
@@ -17,8 +18,7 @@
 
 <script>
   export default {
-    methods: {
-    },
+    methods: {},
   }
 </script>
 
@@ -57,8 +57,8 @@
     text-align: center;
   }
 
-  .router-link-exact-active {
-    border-bottom:solid 2px var(--color-blue);
+  .router-link-active {
+    border-bottom: solid 2px var(--color-blue);
   }
 
   .content {
