@@ -4,6 +4,9 @@
       <el-form-item label="Name" prop="name" required>
         <el-input v-model="form.name"></el-input>
       </el-form-item>
+      <el-form-item label="Description" prop="desc">
+        <el-input type="textarea" v-model="form.desc"></el-input>
+      </el-form-item>
       <el-form-item label="Private" required>
         <el-switch v-model="form.private"></el-switch>
       </el-form-item>
@@ -22,6 +25,7 @@
       return {
         form: {
           name: '',
+          desc: '',
           private: '',
         },
         rules: {},

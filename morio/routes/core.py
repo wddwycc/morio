@@ -3,7 +3,7 @@ from flask import g
 from flask import jsonify, request
 
 from voluptuous import Required
-from voluptuous import Coerce
+from voluptuous import Coerce, Any
 
 from morio.core.error import SignatureError, ConflictException
 from morio.core.auth import login_required
@@ -33,6 +33,7 @@ def get_repos():
 def create_repo():
     schema = {
         Required('name'): str,
+        Required('desc'): Any(str, None),
         Required('private'): Coerce(bool),
     }
     payload = verify_payload(request.get_json(), schema)
