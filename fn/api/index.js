@@ -22,7 +22,7 @@ client.interceptors.response.use(response => {
   }
   return response
 }, error => {
-  let msg = error.response.data.error || error.response.statusText
+  let msg = error.response.data.msg || error.response.statusText
   Message.error(msg)
   return Promise.reject(error)
 });
@@ -30,5 +30,8 @@ client.interceptors.response.use(response => {
 export default {
   register: (data) => {
     return client.post('/user/register', {...data})
+  },
+  login: (data) => {
+    return client.post('/user/login', {...data})
   },
 }

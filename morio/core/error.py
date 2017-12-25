@@ -1,23 +1,47 @@
-from enum import Enum
-from flask import jsonify
+import json
+from werkzeug.exceptions import HTTPException
 
 
-class APIError(Enum):
-    USERNAME_USED = 'Username already used'
-    EMAIL_USED = 'Email already used'
+class JsonException(HTTPException):
+    code = 400
+    error = 'invalid_request'
 
-    USER_NOT_FOUND = 'User not exist'
-    WRONG_PASSWORD = 'Wrong password'
-    NO_AUTH = 'Authorization required'
-    AUTH_FAILED = 'Authorization failed'
-    AUTH_EXPIRED = 'Authorization expired'
+    def __init__(self, code=None, error=None, description=None, response=None):
+        if code is not None:
+            self.code = code
+        if error is not None:
+            self.error = error
+        super(JsonException, self).__init__(description, response)
 
-    BAD_REQUEST = 'Bad Request'
+    def get_body(self, environ=None):
+        return json.dumps(dict(
+            error=self.error,
+            msg=self.description,
+        ))
 
-    @property
-    def json(self):
-        return jsonify({'error': self.value})
+    def get_headers(self, environ=None):
+        return [('Content-Type', 'application/json')]
 
-    @staticmethod
-    def customize(msg):
-        return jsonify({'error': msg})
+
+class SignatureMissingError(JsonException):
+    code = 401
+    error = 'invalid_signature'
+    description = 'Signature required'
+
+
+class SignatureError(JsonException):
+    code = 403
+    error = 'invalid_signature'
+    description = 'Signature is invalid'
+
+
+class NotFoundError(JsonException):
+    code = 404
+    error = 'not_found'
+    description = 'Not found'
+
+
+class ConflictException(JsonException):
+    code = 409
+    error = 'conflicted'
+    description = 'Conflicted'

@@ -1,39 +1,45 @@
 from flask import Blueprint
 from flask import request, Response
-from voluptuous import Required
+from voluptuous import Required, All
+from voluptuous import Email, Match, Length
 
-from morio.core.error import APIError
+from morio.core.error import ConflictException, SignatureError
 from morio.model import User
 from morio.model import db
-from morio.routes.utils import verify_payload, verify_email
+from morio.routes.utils import verify_payload, if_email
 
 bp = Blueprint('user', __name__)
 
 
 @bp.route('/register', methods=['POST'])
 def register():
-    # TODO: name as lower alphabet & number, not equal to core routes.
     schema = {
-        Required('name'): str,
-        Required('nickname'): str,
-        Required('email'): str,
-        Required('password'): str,
+        Required('name'): All(
+            Match(r'^[a-zA-Z0-9_.-]+$', msg='username has invalid symbol'),
+            Length(min=1, max=30, msg='username too long')
+        ),
+        Required('nickname'): All(
+            str, Length(min=1, max=30, msg='nickname too long'),
+        ),
+        Required('email'): All(Email(), msg='bad email format'),
+        Required('password'): All(
+            str, Length(min=6, msg='password less then 6 letters'),
+        ),
     }
     payload = verify_payload(request.get_json(), schema)
-    if not payload:
-        return APIError.BAD_REQUEST.json, 400
     user = User.query.filter_by(name=payload['name']).first()
     if user:
-        return APIError.USERNAME_USED.json, 409
+        raise ConflictException(description='username already used')
     user = User.query.filter_by(email=payload['email']).first()
     if user:
-        return APIError.EMAIL_USED.json, 409
+        raise ConflictException(description='email already used')
     user = User(
         role=User.ROLE_USER,
         name=payload['name'],
         nickname=payload['nickname'],
         email=payload['email'],
     )
+    # todo: send confirm email
     user.password = payload['password']
     with db.auto_commit():
         db.session.add(user)
@@ -49,16 +55,14 @@ def login():
         Required('password'): str,
     }
     payload = verify_payload(request.get_json(), schema)
-    if not payload:
-        return APIError.BAD_REQUEST.json, 400
-    if verify_email(payload['user']):
+    if if_email(payload['user']):
         user = User.query.filter_by(email=payload['user']).first()
     else:
         user = User.query.filter_by(name=payload['user']).first()
     if not user:
-        return APIError.USER_NOT_FOUND.json, 404
+        raise SignatureError(description='user not exist')
     if not user.verify_password(payload['password']):
-        return APIError.AUTH_FAILED.json, 403
+        raise SignatureError(description='wrong password')
     response = Response()
     response.headers['Authorization'] = user.gen_auth_token()
     return response

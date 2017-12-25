@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import request, g
 from jwt import DecodeError, ExpiredSignatureError, InvalidTokenError
-from morio.core.error import APIError
+from morio.core.error import SignatureMissingError, SignatureError
 from morio.model import User
 
 
@@ -10,16 +10,16 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         token = request.headers.get('Authorization')
         if not token:
-            return APIError.NO_AUTH.json, 401
+            raise SignatureMissingError()
         try:
             user_id = User.verify_auth_token(token)
         except (DecodeError, InvalidTokenError):
-            return APIError.AUTH_FAILED.json, 401
+            raise SignatureError()
         except ExpiredSignatureError:
-            return APIError.AUTH_EXPIRED, 401
+            raise SignatureError(description='Signature expired')
         user = User.query.get(user_id)
         if not user:
-            return APIError.AUTH_FAILED.json, 401
+            return SignatureError()
         g.user = user
         return f(*args, **kwargs)
     return decorated_function
