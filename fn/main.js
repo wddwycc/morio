@@ -1,6 +1,7 @@
 import './css/normalize.css'
 import './css/variable.css'
 import './css/base.css'
+import './css/vendor.css'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'

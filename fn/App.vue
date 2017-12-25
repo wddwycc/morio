@@ -76,18 +76,13 @@
   }
 
   .menu__item {
-    display: inline;
-    padding: 10px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: block;
     text-align: center;
     cursor: pointer;
-  }
-
-  .router-link-exact-active {
-    border-bottom: solid 2px var(--color-blue);
-  }
-
-  .router-link-exact-active.dim {
-    border-bottom: none;
   }
 
   .content {

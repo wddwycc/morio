@@ -1,0 +1,8 @@
+.router-link-exact-active {
+  color: var(--color-blue);
+  border-bottom: solid 2px var(--color-blue);
+}
+
+.router-link-exact-active.dim {
+  border-bottom: none;
+}
