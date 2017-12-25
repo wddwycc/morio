@@ -1,6 +1,7 @@
 import Home from './Home.vue';
 import Login from './Login.vue';
 import Register from './Register.vue';
+import Repository from './Repository.vue';
 
 
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
     path: '/Register',
     name: 'Register',
     component: Register,
+  },
+  {
+    path: '/user/:name/:repo_id',
+    name: 'repository',
+    component: Repository,
   },
 ];
 
