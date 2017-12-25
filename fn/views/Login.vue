@@ -5,7 +5,7 @@
         <el-input v-model="form.user"></el-input>
       </el-form-item>
       <el-form-item label="Password" prop="password" required>
-        <el-input v-model="form.password"></el-input>
+        <el-input type="password" v-model="form.password"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit()">Login</el-button>

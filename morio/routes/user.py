@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import request, Response, jsonify
+from flask import request, jsonify
 from voluptuous import Required, All
 from voluptuous import Email, Match, Length
 
