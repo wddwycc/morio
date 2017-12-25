@@ -10,13 +10,13 @@ let client = axios.create({
 client.interceptors.request.use(request => {
   const authToken = db.get('authToken')
   if (authToken) {
-    request.headers['Authorization'] = authToken
+    request.headers['authorization'] = authToken
   }
   return request
 });
 
 client.interceptors.response.use(response => {
-  const authToken = response.headers['Authorization']
+  const authToken = response.headers['authorization']
   if (authToken) {
     db.set('authToken', authToken)
   }

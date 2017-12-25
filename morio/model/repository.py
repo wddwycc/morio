@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey, UniqueConstraint
-from sqlalchemy import Integer, DateTime, Boolean, Text
+from sqlalchemy import Integer, DateTime, Boolean, Text, String
 from sqlalchemy.orm import relationship
 
 from morio.model import db
@@ -10,7 +10,7 @@ from morio.model import db
 class Repository(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    name = Column(Integer, nullable=False)
+    name = Column(String, nullable=False, index=True)
     desc = Column(Text)
 
     private = Column(Boolean, nullable=False)
