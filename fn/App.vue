@@ -1,14 +1,22 @@
 <template>
   <div id="app">
     <div class="menu">
-      <ul class="menu--left">
-        <router-link to="/" tag="li" class="menu__item" exact>Home</router-link>
+      <ul class="menu__left">
+        <router-link to="/" tag="li" class="menu__item">Home</router-link>
       </ul>
-      <ul class="menu--right">
-        <router-link to="/login" tag="li" class="menu__item" exact>Login</router-link>
-        <router-link to="/register" tag="li" class="menu__item" exact>Register</router-link>
+      <ul class="menu__right">
+        <li>
+          <ul class="menu__visitor">
+            <router-link to="/login" tag="li" class="menu__item">Login</router-link>
+            <router-link to="/register" tag="li" class="menu__item">Register</router-link>
+          </ul>
+        </li>
+        <li>
+          <ul class="menu__login">
+            <router-link to="/new" tag="li" class="el-icon-plus dim menu__item"></router-link>
+          </ul>
+        </li>
       </ul>
-      <router-link to="/new" tag="li" class="el-icon-plus"></router-link>
     </div>
     <div class="content">
       <router-view></router-view>
@@ -30,6 +38,7 @@
 
   .menu {
     display: flex;
+    list-style-type: none;
     height: 50px;
     box-sizing: border-box;
     justify-content: space-between;
@@ -37,17 +46,32 @@
     border-bottom: solid 1px var(--color-x-light-grey);
   }
 
-  .menu--left {
+  .menu__left {
     display: flex;
     height: 100%;
     box-sizing: border-box;
     align-items: center;
   }
 
-  .menu--right {
+  .menu__right {
     display: flex;
+    list-style-type: none;
     height: 100%;
     box-sizing: border-box;
+    align-items: center;
+  }
+
+  .menu__visitor {
+    display: flex;
+    height: 100%;
+    list-style-type: none;
+    align-items: center;
+  }
+
+  .menu__login {
+    display: flex;
+    height: 100%;
+    list-style-type: none;
     align-items: center;
   }
 
@@ -55,10 +79,15 @@
     display: inline;
     padding: 10px;
     text-align: center;
+    cursor: pointer;
   }
 
-  .router-link-active {
+  .router-link-exact-active {
     border-bottom: solid 2px var(--color-blue);
+  }
+
+  .router-link-exact-active.dim {
+    border-bottom: none;
   }
 
   .content {
