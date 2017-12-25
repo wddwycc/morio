@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ this.$route.params['username'] }}</h1>
+    <h1>{{ $route.params['username'] }}</h1>
 
     <div>
       <el-card class="repo-cell" v-for="repo in repos" :key="repo.id">
@@ -27,7 +27,7 @@
     },
     methods: {
       fetchRepos() {
-        api.getRepos().then((resp) => {
+        api.getRepos(this.$route.params['username']).then((resp) => {
           this.repos = resp.data
         })
       }

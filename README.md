@@ -32,7 +32,10 @@ Create `local_settings.py`, fill it with
 
 ```python
 DEBUG = True
-SQLALCHEMY_DATABASE_URI = ''
+SECRET_KEY = 'morio.secret'
+SQLALCHEMY_DATABASE_URI = (
+    'postgresql://morio:pw@localhost:5432/morio'
+)
 ```
 
 ## run dev server
