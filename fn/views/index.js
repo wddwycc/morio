@@ -29,7 +29,7 @@ const routes = [
     component: NewRepo,
   },
   {
-    path: '/user/:name/:repo_id',
+    path: '/user/:username/:repo_name',
     name: 'Repo',
     component: Repo,
   },

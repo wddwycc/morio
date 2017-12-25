@@ -18,3 +18,12 @@ class Card(db.Model):
         DateTime, default=datetime.now, onupdate=datetime.now,
         nullable=False
     )
+
+    def to_dict(self):
+        return dict(
+            id=self.id,
+            side_a=self.side_a,
+            site_b=self.site_b,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )

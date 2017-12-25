@@ -5,11 +5,11 @@ from flask import jsonify, request
 from voluptuous import Required
 from voluptuous import Coerce, Any
 
-from morio.core.error import SignatureError, ConflictException
+from morio.core.error import NotFoundError, ConflictException
 from morio.core.auth import login_required
 from morio.core.pagination import with_pagination
 from morio.model import db
-from morio.model import Repository
+from morio.model import Repository, Card
 
 from .utils import verify_payload
 
@@ -46,10 +46,23 @@ def create_repo():
 
 
 @bp.route('/repos/<repo_id>/cards')
+@login_required
 def repo_cards(repo_id):
-    raise NotImplemented
+    repo = Repository.query.get(repo_id)
+    if repo.private and g.user.id != repo.uesr_id:
+        raise NotFoundError(description='Repo not found')
+    return jsonify(repo)
 
 
 @bp.route('/repos/<repo_id>/cards', methods=['POST'])
+@login_required
 def create_repo_card(repo_id):
-    raise NotImplemented
+    schema = {
+        Required('side_a'): str,
+        Required('side_b'): str,
+    }
+    payload = verify_payload(request.get_json(), schema)
+    card = Card(repo_id=repo_id, **payload)
+    with db.auto_commit():
+        db.session.add(card)
+    return jsonify(card)

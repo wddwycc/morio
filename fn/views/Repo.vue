@@ -1,17 +1,16 @@
 <template>
-    <div>
-        <el-card v-for="card in repo" :key="card.id">
-            <div slot="header" >
-                {{ card.name }}
-            </div>
-            <div>
-                {{ card.question }}
-            </div>
-            <div>
-
-            </div>
-        </el-card>
-    </div>
+  <div>
+    <el-card v-for="card in repo" :key="card.id">
+      <div slot="header">
+        {{ card.name }}
+      </div>
+      <div>
+        {{ card.question }}
+      </div>
+      <div>
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <script>

@@ -39,5 +39,11 @@ export default {
   },
   newRepo: (data) => {
     return client.post('/repos', {...data})
+  },
+  getCards: (repo_id) => {
+    return client.get(`/repos/${repo_id}/cards`)
+  },
+  newCard: (repo_id, {...data}) => {
+    return client.post(`/repos/${repo_id}/cards`, {...data})
   }
 }
