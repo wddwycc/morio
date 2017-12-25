@@ -3,7 +3,7 @@
     <div class="repositories">
       <el-card class="repository" v-for="repo in repos" :key="repo.id">
         <div slot="header" class="repository__name">
-          <router-link :to="{ name: 'Repo', params: { name: 'name', repo_id: repo.name }}"> {{ repo.name }}</router-link>
+          <router-link :to="{ name: 'Repo', params: { name: 'name', repo_id: repo.name }}" tag="div"> {{ repo.name }}</router-link>
         </div>
         <div>
           <span class="repository__date"> {{ repo.updated_at }} </span>
