@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import request, Response
+from flask import request, Response, jsonify
 from voluptuous import Required, All
 from voluptuous import Email, Match, Length
 
@@ -43,9 +43,9 @@ def register():
     user.password = payload['password']
     with db.auto_commit():
         db.session.add(user)
-    response = Response()
-    response.headers['Authorization'] = user.gen_auth_token()
-    return response
+    resp = jsonify(user)
+    resp.headers['Authorization'] = user.gen_auth_token()
+    return resp
 
 
 @bp.route('/login', methods=['POST'])
@@ -63,6 +63,6 @@ def login():
         raise SignatureError(description='user not exist')
     if not user.verify_password(payload['password']):
         raise SignatureError(description='wrong password')
-    response = Response()
-    response.headers['Authorization'] = user.gen_auth_token()
-    return response
+    resp = jsonify(user)
+    resp.headers['Authorization'] = user.gen_auth_token()
+    return resp

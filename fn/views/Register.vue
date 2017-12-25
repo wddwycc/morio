@@ -52,11 +52,11 @@
             return
           }
           if (!this.validPasswordConfirmation()) {
-            Message.warning('Password not the same')
+            Message.warning('password not the same')
             return
           }
-          api.register(this.form).then(() => {
-            Message.success('Register success')
+          api.register(this.form).then((resp) => {
+            Message.success(`Welcome, ${resp.data.name}`)
             this.$router.push('/')
           })
         })
