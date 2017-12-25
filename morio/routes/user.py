@@ -39,8 +39,8 @@ def register():
         nickname=payload['nickname'],
         email=payload['email'],
     )
-    # todo: send confirm email
     user.password = payload['password']
+    # todo: send confirm email
     with db.auto_commit():
         db.session.add(user)
     resp = jsonify(user)

@@ -6,13 +6,8 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 
 import {
-  Button,
-  Form,
-  FormItem,
-  Input,
-  Menu,
-  MenuItem,
-  Card,
+  Button, Card, Form, FormItem, Input, Menu, MenuItem,
+  Switch,
 } from 'element-ui'
 import routerConfig from './views/index'
 import store from './store/index';
@@ -26,6 +21,7 @@ Vue.use(Input)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Card)
+Vue.use(Switch)
 
 const router = new VueRouter(routerConfig);
 

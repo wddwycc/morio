@@ -1,7 +1,8 @@
-import Home from './Home.vue';
-import Login from './Login.vue';
-import Register from './Register.vue';
-import Repository from './Repository.vue';
+import Home from './Home.vue'
+import Login from './Login.vue'
+import Register from './Register.vue'
+import Repo from './Repo.vue'
+import NewRepo from './NewRepo.vue'
 
 
 const routes = [
@@ -10,20 +11,27 @@ const routes = [
     name: 'Home',
     component: Home,
   },
+  // user
   {
     path: '/login',
     name: 'Login',
     component: Login,
   },
   {
-    path: '/Register',
+    path: '/register',
     name: 'Register',
     component: Register,
   },
+  // core
+  {
+    path: '/new',
+    name: 'NewRepo',
+    component: NewRepo,
+  },
   {
     path: '/user/:name/:repo_id',
-    name: 'repository',
-    component: Repository,
+    name: 'Repo',
+    component: Repo,
   },
 ];
 
