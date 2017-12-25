@@ -38,15 +38,21 @@
           password: '',
           passwordConfirmed: '',
         },
-        rules: {
-          name: [],
-        }
+        rules: {}
       }
     },
     methods: {
+      validPasswordConfirmation() {
+        return this.form.password && this.form.passwordConfirmed
+          && this.form.password === this.form.passwordConfirmed
+      },
       onSubmit() {
         this.$refs['form'].validate((valid) => {
           if (!valid) {
+            return
+          }
+          if (!this.validPasswordConfirmation()) {
+            Message.warning('Password not the same')
             return
           }
           api.register(this.form).then(() => {
