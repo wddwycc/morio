@@ -21,10 +21,8 @@ bp = Blueprint('core', __name__)
 @login_required
 @with_pagination
 def get_repos():
-    if not g.user:
-        raise SignatureError()
     repos = Repository.query.filter_by(user_id=g.user.id) \
-        .offest(g.limit).limit(g.offset).all()
+        .limit(g.limit).offset(g.offset).all()
     return jsonify(repos)
 
 

@@ -3,10 +3,10 @@
     <div class="repositories">
       <el-card class="repository" v-for="repo in repos" :key="repo.id">
         <div slot="header" class="repository__name">
-          <router-link :to = "{ name: 'Repo', params: { name: 'name', repo_id: repo.name }}"> {{ repo.name }} </router-link>
+          <router-link :to="{ name: 'Repo', params: { name: 'name', repo_id: repo.name }}"> {{ repo.name }}</router-link>
         </div>
         <div>
-          <span class="repository__date"> {{ repo.date }} </span>
+          <span class="repository__date"> {{ repo.updated_at }} </span>
           <span class="repository__desc"> {{ repo.desc }}</span>
         </div>
       </el-card>
@@ -15,25 +15,24 @@
 </template>
 
 <script>
+  import api from '../api'
+
   export default {
     data() {
       return {
-        repos: [
-          {
-            id: 1,
-            name: '英语',
-            date: '20171201',
-            desc: '英语单词'
-          },
-          {
-            id: 2,
-            name: '日语',
-            date: '20171214',
-            desc: '日语单词'
-          },
-        ]
+        repos: [],
       }
     },
+    methods: {
+      fetchRepos() {
+        api.getRepos().then((resp) => {
+          this.repos = resp.data
+        })
+      }
+    },
+    mounted: function() {
+      this.fetchRepos()
+    }
   }
 </script>
 

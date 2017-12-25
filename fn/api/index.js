@@ -34,6 +34,9 @@ export default {
   login: (data) => {
     return client.post('/user/login', {...data})
   },
+  getRepos: () => {
+    return client.get('/repos')
+  },
   newRepo: (data) => {
     return client.post('/repos', {...data})
   }

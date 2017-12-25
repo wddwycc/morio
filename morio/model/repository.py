@@ -29,7 +29,9 @@ class Repository(db.Model):
         return dict(
             id=self.id,
             name=self.name,
+            desc=self.desc,
             user_id=self.user_id,
+            user_name=self.user.name,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
