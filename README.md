@@ -2,7 +2,7 @@
 
 web service for memory ( under development )
 
-## tech stack
+## Built With
 
 ### front-end
 

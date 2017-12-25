@@ -3,6 +3,7 @@ import Login from './Login.vue'
 import Register from './Register.vue'
 import Repo from './Repo.vue'
 import NewRepo from './NewRepo.vue'
+import User from './User.vue'
 
 
 const routes = [
@@ -27,6 +28,11 @@ const routes = [
     path: '/new',
     name: 'NewRepo',
     component: NewRepo,
+  },
+  {
+    path: '/user/:username',
+    name: 'User',
+    component: User,
   },
   {
     path: '/user/:username/:repo_name',

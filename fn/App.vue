@@ -2,7 +2,7 @@
   <div id="app">
     <div class="menu">
       <ul class="menu__left">
-        <router-link to="/" tag="li" class="menu__item">Home</router-link>
+        <router-link to="/" tag="li" class="menu__item dim logo">Morio</router-link>
       </ul>
       <ul class="menu__right">
         <li>
@@ -34,6 +34,11 @@
   #app {
     max-width: 980px;
     margin: 0 auto;
+  }
+
+  .logo {
+    font-weight: bold;
+    font-size: var(--size-large);
   }
 
   .menu {

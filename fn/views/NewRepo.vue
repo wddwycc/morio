@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h1>New Repository</h1>
+
     <el-form ref="form" :rules="rules" :model="form" label-width="100px" label-position="right" class="register">
       <el-form-item label="Name" prop="name" required>
         <el-input v-model="form.name"></el-input>

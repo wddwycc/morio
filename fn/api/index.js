@@ -34,7 +34,10 @@ export default {
   login: (data) => {
     return client.post('/user/login', {...data})
   },
-  getRepos: () => {
+  getRepos: (owner = null) => {
+    if (owner) {
+      return client.get(`/repos?owner=${owner}`)
+    }
     return client.get('/repos')
   },
   newRepo: (data) => {

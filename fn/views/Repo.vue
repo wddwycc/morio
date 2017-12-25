@@ -1,5 +1,9 @@
 <template>
   <div>
+    <h1>
+      <router-link :to="{name: 'User', params: { username: this.$route.params['username'] }}">{{ this.$route.params['username'] }}</router-link> / {{ this.$route.params['repo_name'] }}
+    </h1>
+
     <el-card v-for="card in repo" :key="card.id">
       <div slot="header">
         {{ card.name }}
@@ -31,5 +35,7 @@
         ]
       }
     },
+    computed: {
+    }
   }
 </script>

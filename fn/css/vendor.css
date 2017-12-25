@@ -4,5 +4,6 @@
 }
 
 .router-link-exact-active.dim {
+  color: inherit;
   border-bottom: none;
 }

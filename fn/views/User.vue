@@ -1,6 +1,7 @@
 <template>
   <div>
-    <!--  todo: replace with landing page -->
+    <h1>{{ this.$route.params['username'] }}</h1>
+
     <div>
       <el-card class="repo-cell" v-for="repo in repos" :key="repo.id">
         <div slot="header" class="repo-cell__name">
@@ -31,27 +32,12 @@
         })
       }
     },
-    mounted: function() {
+    mounted: function () {
       this.fetchRepos()
-    }
+    },
   }
 </script>
 
-<style>
-  .repo-cell {
-    margin-bottom: 18px;
-  }
+<style scoped>
 
-  .repo-cell__name {
-  }
-
-  .repo-cell__date {
-    color: var(--color-grey);
-    font-size: var(--size-x-small);
-  }
-
-  .repo-cell__desc {
-    margin-left: 18px;
-    color: var(--color-light-grey);
-  }
 </style>
