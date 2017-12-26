@@ -13,7 +13,7 @@ from morio.core.pagination import with_pagination
 from morio.model import db
 from morio.model import Repository, Card, User
 
-from .utils import verify_payload
+from .utils import verify_payload, retrieve_user_repo
 
 
 bp = Blueprint('core', __name__)
@@ -29,6 +29,24 @@ def get_repos(username):
     repos = query.order_by(desc(Repository.updated_at)) \
         .limit(g.limit).offset(g.offset).all()
     return jsonify(repos)
+
+
+@bp.route('/users/<username>/repos/<repo_name>')
+@login_optional
+def get_repo(username, repo_name):
+    _, repo = retrieve_user_repo(username, repo_name)
+    return jsonify(repo)
+
+
+@bp.route('/users/<username>/repos/<repo_name>/cards')
+@login_optional
+@with_pagination
+def repo_cards(username, repo_name):
+    _, repo = retrieve_user_repo(username, repo_name)
+    cards = Card.query.filter_by(repository_id=repo.id) \
+        .order_by(desc(Card.updated_at)) \
+        .limit(g.limit).offset(g.offset).all()
+    return jsonify(cards)
 
 
 @bp.route('/repos', methods=['POST'])
@@ -50,42 +68,16 @@ def create_repo():
     return jsonify(repo)
 
 
-@bp.route('/users/<username>/repos/<repo_name>')
+@bp.route('/cards', methods=['POST'])
 @login_optional
-def get_repo(username, repo_name):
-    user = User.query.filter_by(name=username).first()
-    if not user:
-        raise NotFoundError(description='User not found')
-    repo = Repository.query.filter_by(user_id=user.id, name=repo_name).first()
-    if not repo:
-        raise NotFoundError(description='Repo not found')
-    if repo.private and (not g.user or g.user.id != repo.user_id):
-        raise NotFoundError(description='Repo not found')
-    return jsonify(repo)
-
-
-@bp.route('/users/<username>/repos/<repo_name>/cards')
-@login_required
-def repo_cards(username, repo_name):
-    user = User.query.filter_by(name=username).first()
-    if not user:
-        raise NotFoundError(description='User not found')
-    repo = Repository.query.filter_by(user_id=user.id, name=repo_name).first()
-    if not repo or (repo.private and g.user.id != repo.user_id):
-        raise NotFoundError(description='Repo not found')
-    return jsonify(repo)
-
-
-@bp.route('/users/<username>/repos/<repo_name>/cards', methods=['POST'])
-@login_required
-def create_repo_card(username, repo_name):
-    # schema = {
-    #     Required('side_a'): str,
-    #     Required('side_b'): str,
-    # }
-    # payload = verify_payload(request.get_json(), schema)
-    # card = Card(repo_id=repo_id, **payload)
-    # with db.auto_commit():
-    #     db.session.add(card)
-    # return jsonify(card)
-    raise NotImplemented
+def create_repo_card():
+    schema = {
+        Required('repository_id'): int,
+        Required('side_a'): str,
+        Required('side_b'): str,
+    }
+    payload = verify_payload(request.get_json(), schema)
+    card = Card(**payload)
+    with db.auto_commit():
+        db.session.add(card)
+    return jsonify(card)

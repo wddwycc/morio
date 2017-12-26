@@ -11,7 +11,7 @@ class Card(db.Model):
     repository_id = Column(
         Integer, ForeignKey('repository.id'), nullable=False)
     side_a = Column(Text)
-    site_b = Column(Text)
+    side_b = Column(Text)
 
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(
@@ -23,7 +23,7 @@ class Card(db.Model):
         return dict(
             id=self.id,
             side_a=self.side_a,
-            site_b=self.site_b,
+            side_b=self.side_b,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )

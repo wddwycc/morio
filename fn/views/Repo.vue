@@ -3,11 +3,11 @@
     <div v-show="!loading">
       <h1>
         <!--todo: replace with load function-->
-        <router-link :to="{name: 'User', params: { username: $route.params['username'] }}">{{ $route.params['username'] }}</router-link>
-        / {{ $route.params['repo_name'] }}
+        <router-link :to="{name: 'User', params: { username: repo.username }}">{{ repo.username }}</router-link>
+        / {{ repo.name }}
       </h1>
 
-      <div class="repo__top-right">
+      <div v-if="isOwner" class="repo__top-right">
         <el-button v-if="!editing" type="primary" icon="el-icon-plus" size="mini" @click="editing = true">Edit</el-button>
         <el-button v-if="editing" icon="el-icon-close" size="mini" @click="editing = false">Exit Edit</el-button>
         <!--<el-button icon="el-icon-setting" size="mini">Setting</el-button>-->
@@ -21,7 +21,7 @@
                 type="textarea"
                 :rows="2"
                 placeholder="Side A"
-                v-model="editor.sideA">
+                v-model="editorForm.side_a">
               </el-input>
             </el-col>
             <el-col :span="11" :offset="2">
@@ -29,20 +29,20 @@
                 type="textarea"
                 :rows="2"
                 placeholder="Side B"
-                v-model="editor.sideB">
+                v-model="editorForm.side_b">
               </el-input>
             </el-col>
           </el-row>
-          <el-button @click="editing = false">End Edit</el-button>
+          <el-button class="repo-editor__submit" size="mini" @click="newCard()">Add</el-button>
         </div>
       </transition>
 
       <el-card v-for="card in cards" :key="card.id">
         <div slot="header">
-          {{ card.name }}
+          {{ card['side_a'] }}
         </div>
         <div>
-          {{ card.question }}
+          {{ card['side_b'] }}
         </div>
         <div>
         </div>
@@ -53,50 +53,54 @@
 
 <script>
   import api from '../api'
+  import {Message} from 'element-ui'
 
   export default {
     data() {
       return {
         editing: false,
-        editor: {
-          sideA: '',
-          sideB: '',
-        },
-        form: {
-          sideA: '',
-          sideB: '',
+        editorForm: {
+          side_a: '',
+          side_b: '',
         },
         loading: true,
         repo: {},
-        cards: [
-          {
-            id: 1,
-            name: '你好',
-            question: 'hello',
-          },
-          {
-            id: 2,
-            name: '再见',
-            question: 'bye',
-          }
-        ]
+        cards: []
       }
     },
-    computed: {},
+    computed: {
+      isOwner: function () {
+        // todo: replace with vuex
+        return this.repo.username === 'duan'
+      }
+    },
     methods: {
-      getRepo: function () {
-        api.getRepo(this.$route.params['username'],
-          this.$route.params['repo_name']).then(resp => {
-          this.repo = resp.data
-          this.loading = false
-        })
-      },
       newCard: function () {
-        api.newCard($route.params['repo_name'])
+        api.newCard(
+          {repository_id: this.repo.id, ...this.editorForm}
+        ).then(() => {
+          Message.success('Created card')
+          api.getCards(
+            this.repo.username, this.repo.name
+          ).then(resp => {
+            this.cards = resp.data
+          })
+        })
       }
     },
     mounted: function () {
-      this.getRepo()
+      api.getRepo(
+        this.$route.params['username'],
+        this.$route.params['repo_name'],
+      ).then(resp => {
+        this.repo = resp.data
+        api.getCards(
+          this.repo.username, this.repo.name
+        ).then(resp => {
+          this.cards = resp.data
+          this.loading = false
+        })
+      })
     }
   }
 </script>
@@ -114,6 +118,10 @@
 
   .repo-editor {
     margin: 20px 0;
+  }
+
+  .repo-editor__submit {
+    margin-top: 10px;
   }
 
 </style>
