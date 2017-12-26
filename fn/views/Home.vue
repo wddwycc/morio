@@ -1,17 +1,6 @@
 <template>
   <div>
     <!--  todo: replace with landing page -->
-    <div>
-      <el-card class="repo-cell" v-for="repo in repos" :key="repo.id">
-        <div slot="header" class="repo-cell__name">
-          <router-link :to="{ name: 'Repo', params: { username: repo.username, repo_name: repo.name }}" tag="div"> {{ repo.name }}</router-link>
-        </div>
-        <div>
-          <span class="repo-cell__date"> {{ repo['updated_at'] }} </span>
-          <span class="repo-cell__desc"> {{ repo.desc }}</span>
-        </div>
-      </el-card>
-    </div>
   </div>
 </template>
 
@@ -32,7 +21,7 @@
       }
     },
     mounted: function() {
-      this.fetchRepos()
+      // this.fetchRepos()
     }
   }
 </script>

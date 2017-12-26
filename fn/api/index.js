@@ -34,19 +34,19 @@ export default {
   login: (data) => {
     return client.post('/user/login', {...data})
   },
-  getRepos: (owner = null) => {
-    if (owner) {
-      return client.get(`/repos?owner=${owner}`)
-    }
-    return client.get('/repos')
+  getRepos: (username) => {
+    return client.get(`/users/${username}/repos`)
+  },
+  getRepo: (username, repoName) => {
+    return client.get(`/users/${username}/repos/${repoName}`)
+  },
+  getCards: (username, repoName) => {
+    return client.get(`/users/${username}/repos/${repoName}/cards`)
   },
   newRepo: (data) => {
     return client.post('/repos', {...data})
   },
-  getCards: (repo_id) => {
-    return client.get(`/repos/${repo_id}/cards`)
-  },
-  newCard: (repo_id, {...data}) => {
-    return client.post(`/repos/${repo_id}/cards`, {...data})
+  newCard: (data) => {
+    return client.post(`/cards`, data)
   }
 }

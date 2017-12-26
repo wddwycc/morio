@@ -38,6 +38,7 @@ const routes = [
     path: '/user/:username/:repo_name',
     name: 'Repo',
     component: Repo,
+    props: true,
   },
 ];
 

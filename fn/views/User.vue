@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>{{ $route.params['username'] }}</h1>
+    <h1>{{ username }}</h1>
 
     <div>
       <el-card class="repo-cell" v-for="repo in repos" :key="repo.id">
         <div slot="header" class="repo-cell__name">
-          <router-link :to="{ name: 'Repo', params: { username: repo.username, repo_name: repo.name }}" tag="div"> {{ repo.name }}</router-link>
+          <router-link :to="{ name: 'Repo', params: { username: repo.username, repo_name: repo.name, repoId: repo.id }}" tag="div"> {{ repo.name }}</router-link>
         </div>
         <div>
           <span class="repo-cell__date"> {{ repo['updated_at'] }} </span>
@@ -25,9 +25,14 @@
         repos: [],
       }
     },
+    computed: {
+      username: function() {
+        return this.$route.params['username']
+      }
+    },
     methods: {
       fetchRepos() {
-        api.getRepos(this.$route.params['username']).then((resp) => {
+        api.getRepos(this.username).then((resp) => {
           this.repos = resp.data
         })
       }
