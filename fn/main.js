@@ -13,8 +13,10 @@ import {
 } from 'element-ui'
 import routerConfig from './views/index'
 import store from './store/index';
+import components from './components/index'
 
 Vue.use(VueRouter)
+Vue.use(components)
 
 Vue.use(Button)
 Vue.use(Menu)

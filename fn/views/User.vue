@@ -3,6 +3,7 @@
     <h1>{{ username }}</h1>
 
     <div>
+      <repo-cell></repo-cell>
       <el-card class="repo-cell" v-for="repo in repos" :key="repo.id">
         <div slot="header" class="repo-cell__name">
           <router-link :to="{ name: 'Repo', params: { username: repo.username, repo_name: repo.name, repoId: repo.id }}" tag="div"> {{ repo.name }}</router-link>
