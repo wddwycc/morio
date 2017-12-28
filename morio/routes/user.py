@@ -1,8 +1,9 @@
 from flask import Blueprint
-from flask import request, jsonify
+from flask import request, jsonify, g
 from voluptuous import Required, All
 from voluptuous import Email, Match, Length
 
+from morio.core.auth import login_required
 from morio.core.error import ConflictException, SignatureError
 from morio.model import User
 from morio.model import db
@@ -66,3 +67,9 @@ def login():
     resp = jsonify(user)
     resp.headers['Authorization'] = user.gen_auth_token()
     return resp
+
+
+@bp.route('/me')
+@login_required
+def me():
+    return jsonify(g.user)

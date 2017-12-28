@@ -37,6 +37,7 @@
           }
           api.login(this.form).then(resp => {
             Message.success(`Welcome, ${resp.data.name}`)
+            this.$store.commit('loadUser', resp.data)
             this.$router.push('/')
           })
         })

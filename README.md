@@ -6,7 +6,6 @@ web service for memory ( under development )
 
 ### front-end
 
-* webpack
 * vue.js
 * element ui
 
@@ -14,6 +13,7 @@ web service for memory ( under development )
 
 * flask
 * postgresql
+* influxdb
 
 ### others
 
@@ -25,7 +25,6 @@ web service for memory ( under development )
 ```
 $ npm install
 $ pipenv install
-$ python manage.py db upgrade
 ```
 
 Create `local_settings.py`, fill it with
@@ -42,6 +41,7 @@ SQLALCHEMY_DATABASE_URI = (
 
 ```
 $ docker-compose up
+$ python manage.py db upgrade
 $ npm run dev
 $ python manage.py run
 ```

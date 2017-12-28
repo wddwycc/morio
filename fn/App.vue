@@ -4,16 +4,17 @@
       <ul class="menu__left">
         <router-link to="/" tag="li" class="menu__item dim logo">Morio</router-link>
       </ul>
-      <ul class="menu__right">
-        <li>
+      <ul class="menu__right" v-if="!this.$store.state.user.loading">
+        <li v-if="this.$store.state.user.name">
+          <ul class="menu__login">
+            <router-link to="/new" tag="li" class="el-icon-plus dim menu__item"></router-link>
+            <li class="menu__item" @click="logout()">Logout</li>
+          </ul>
+        </li>
+        <li v-else>
           <ul class="menu__visitor">
             <router-link to="/login" tag="li" class="menu__item">Login</router-link>
             <router-link to="/register" tag="li" class="menu__item">Register</router-link>
-          </ul>
-        </li>
-        <li>
-          <ul class="menu__login">
-            <router-link to="/new" tag="li" class="el-icon-plus dim menu__item"></router-link>
           </ul>
         </li>
       </ul>
@@ -25,8 +26,23 @@
 </template>
 
 <script>
+  import api from './api'
+  import db from './store/db'
+
   export default {
-    methods: {},
+    methods: {
+      logout() {
+        db.del('authToken')
+        this.$store.commit('dropUser')
+      }
+    },
+    mounted: function () {
+      api.me().then(resp => {
+        this.$store.commit('loadUser', resp.data)
+      }, () => {
+        this.$store.commit('loadUser', null)
+      })
+    }
   }
 </script>
 

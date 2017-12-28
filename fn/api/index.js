@@ -23,11 +23,16 @@ client.interceptors.response.use(response => {
   return response
 }, error => {
   let msg = error.response.data.msg || error.response.statusText
-  Message.error(msg)
+  if (error.response.status === 401) {} else {
+    Message.error(msg)
+  }
   return Promise.reject(error)
 });
 
 export default {
+  me: () => {
+    return client.get('/user/me')
+  },
   register: (data) => {
     return client.post('/user/register', {...data})
   },
