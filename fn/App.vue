@@ -40,7 +40,7 @@
   export default {
     methods: {
       toSetting() {
-        this.$router.push('/setting')
+        this.$router.push(`/user/${this.$store.state.user.name}`)
       },
       logout() {
         db.del('authToken')

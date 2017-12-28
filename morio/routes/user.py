@@ -4,7 +4,7 @@ import pagan
 from flask import current_app
 from flask import Blueprint
 from flask import request, jsonify, g
-from voluptuous import Required, All
+from voluptuous import Required, Optional, All, Url
 from voluptuous import Email, Match, Length
 
 from morio.core.auth import login_required
@@ -84,3 +84,21 @@ def login():
 @login_required
 def me():
     return jsonify(g.user)
+
+
+@bp.route('/me', methods=['PUT'])
+@login_required
+def update_me():
+    schema = {
+        Optional('nickname'): All(
+            str, Length(min=1, max=30, msg='nickname too long'),
+        ),
+        Optional('avatar'): All(Url, msg='invalid avatar url')
+    }
+    payload = verify_payload(request.get_json(), schema)
+    user = g.user
+    for key, value in payload.items():
+        setattr(user, key, value)
+    with db.auto_commit():
+        db.session.add(user)
+    return jsonify(user)
