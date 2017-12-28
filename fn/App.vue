@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="menu">
+    <nav class="menu">
       <div class="menu__inner">
         <ul class="menu__left">
           <router-link to="/" tag="li" class="menu__item dim logo">Morio</router-link>
@@ -28,7 +28,7 @@
           </ul>
         </div>
       </div>
-    </div>
+    </nav>
     <div class="content">
       <router-view></router-view>
     </div>

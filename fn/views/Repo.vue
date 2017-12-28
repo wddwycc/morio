@@ -8,9 +8,9 @@
       </h1>
 
       <div v-if="isOwner" class="repo__top-right">
-        <el-button v-if="!editing" type="primary" icon="el-icon-plus" size="mini" @click="editing = true">Edit</el-button>
-        <el-button v-if="editing" icon="el-icon-close" size="mini" @click="editing = false">Exit Edit</el-button>
-        <!--<el-button icon="el-icon-setting" size="mini">Setting</el-button>-->
+        <el-button v-if="!editing" type="primary" icon="el-icon-plus" size="mini" @click="editing = true">New</el-button>
+        <el-button v-if="editing" icon="el-icon-close" size="mini" @click="editing = false">Exit</el-button>
+        <el-button icon="el-icon-setting" size="mini"></el-button>
       </div>
 
       <transition name="fade">
@@ -70,7 +70,6 @@
     },
     computed: {
       isOwner: function () {
-        // todo: replace with vuex
         return this.$store.state.user.name === this.repo.username
       }
     },

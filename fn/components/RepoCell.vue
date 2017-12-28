@@ -30,15 +30,16 @@
 
   .repo-cell__header .el-button {
     padding: 0;
+    font-size: var(--size-medium);
   }
 
   .repo-cell__desc {
-    color: var(--color-light-grey);
+    font-size: var(--size-small);
     margin-bottom: 20px;
   }
 
   .repo-cell__date {
-    color: var(--color-grey);
-    font-size: var(--size-x-small);
+    color: var(--color-light-grey);
+    font-size: var(--size-xx-small);
   }
 </style>
