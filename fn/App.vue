@@ -10,12 +10,12 @@
           <li class="menu__avatar" :style="{ backgroundImage: `url(${this.$store.state.user.avatar})`}"></li>
 
           <li class="menu__item">
-            <el-dropdown @command="handleDropdown" class="menu__item" :show-timeout="0">
-                <span class="el-dropdown-link">
+            <el-dropdown trigger="click" @command="handleDropdown" :show-timeout="0" :hide-timeout="0">
+                <span>
                   {{ this.$store.state.user.name }} <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="toSetting">Setting</el-dropdown-item>
+                <el-dropdown-item command="toProfile">Your Profile</el-dropdown-item>
                 <el-dropdown-item divided command="logout">Logout</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -39,7 +39,7 @@
 
   export default {
     methods: {
-      toSetting() {
+      toProfile() {
         this.$router.push(`/user/${this.$store.state.user.name}`)
       },
       logout() {
@@ -115,7 +115,7 @@
   .menu__avatar {
     width: 20px;
     height: 20px;
-    margin: 0 -10px 0 10px;
+    margin: 0 10px;
     background-size: cover;
   }
 
@@ -129,10 +129,6 @@
     text-align: center;
     font-size: var(--size-small);
     cursor: pointer;
-  }
-
-  .menu__item.el-dropdown {
-    margin-top: 1px;
   }
 
   .content {
