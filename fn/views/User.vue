@@ -12,10 +12,10 @@
 
     <main class="user__main">
       <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-        <el-tab-pane label="Repositories" name="repo">
+        <el-tab-pane label="Repositories" name="repos">
           <repo-cell v-for="repo in repos" :data="repo" :key="repo.id"></repo-cell>
         </el-tab-pane>
-        <el-tab-pane label="Favourites" name="fav">
+        <el-tab-pane label="Stars" name="stars">
         </el-tab-pane>
       </el-tabs>
     </main>
@@ -34,7 +34,7 @@
         repos: [],
         // repo & fav
         activeTab: null,
-        tabs: ['repo', 'fav'],
+        tabs: ['repos', 'stars'],
       }
     },
     computed: {
@@ -61,7 +61,7 @@
         if (this.tabs.includes(tab)) {
           this.activeTab = tab
         } else {
-          this.activeTab = 'repo'
+          this.activeTab = 'repos'
         }
       }
     },
