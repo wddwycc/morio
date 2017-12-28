@@ -19,6 +19,7 @@ class User(db.Model):
     name = Column(String(30), nullable=False, index=True, unique=True)
     nickname = Column(String(30), nullable=False, index=True)
     email = Column(String(200), nullable=False, unique=True)
+    avatar = Column(String(200))
 
     _password = Column('password', String(100), nullable=False)
 
@@ -34,6 +35,7 @@ class User(db.Model):
             id=self.id,
             name=self.name,
             nickname=self.nickname,
+            avatar=self.avatar,
             email=self.email,
         )
 

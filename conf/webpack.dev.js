@@ -8,7 +8,8 @@ config.devServer = {
     'Access-Control-Allow-Origin': '*'
   },
   proxy: {
-    "/api": "http://localhost:5000"
+    "/api": "http://localhost:5000",
+    "/upload": "http://localhost:5000"
   },
   historyApiFallback: true,
 }

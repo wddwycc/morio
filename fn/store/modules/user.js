@@ -1,6 +1,7 @@
 const state = {
   loading: true,
   name: null,
+  avatar: null,
 }
 
 const mutations = {
@@ -8,10 +9,12 @@ const mutations = {
     state.loading = false
     if (data) {
       state.name = data.name
+      state.avatar = data.avatar
     }
   },
   dropUser(state) {
     state.name = null
+    state.avatar = null
   },
 }
 

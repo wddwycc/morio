@@ -1,3 +1,7 @@
+import os
+from uuid import uuid4
+import pagan
+from flask import current_app
 from flask import Blueprint
 from flask import request, jsonify, g
 from voluptuous import Required, All
@@ -34,11 +38,18 @@ def register():
     user = User.query.filter_by(email=payload['email']).first()
     if user:
         raise ConflictException(description='email already used')
+
+    avatar = pagan.Avatar(payload['name'], pagan.SHA512)
+    upload_folder = current_app.config['UPLOAD_FOLDER']
+    filepath = os.path.join('avatar', uuid4().hex[:8])
+    avatar.save(os.path.join(upload_folder, filepath), '_.png')
+    avatar_path = '/' + os.path.join('upload', filepath, '_.png')
     user = User(
         role=User.ROLE_USER,
         name=payload['name'],
         nickname=payload['nickname'],
         email=payload['email'],
+        avatar=avatar_path,
     )
     user.password = payload['password']
     # todo: send confirm email

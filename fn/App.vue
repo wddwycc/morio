@@ -7,9 +7,12 @@
       <div class="menu__right" v-if="!this.$store.state.user.loading">
         <ul class="menu__login" v-if="this.$store.state.user.name">
           <router-link to="/new" tag="li" class="el-icon-plus dim menu__item"></router-link>
+          <li class="menu__avatar" :style="{ backgroundImage: `url(${this.$store.state.user.avatar})`}"></li>
+
           <li class="menu__item">
-            <el-dropdown @command="handleDropdown" class="menu__item">
-                <span class="el-dropdown-link"> {{ this.$store.state.user.name }} <i class="el-icon-arrow-down"></i>
+            <el-dropdown @command="handleDropdown" class="menu__item" :show-timeout="0">
+                <span class="el-dropdown-link">
+                  {{ this.$store.state.user.name }} <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="toSetting">Setting</el-dropdown-item>
@@ -109,6 +112,13 @@
     align-items: center;
   }
 
+  .menu__avatar {
+    width: 20px;
+    height: 20px;
+    margin: 0 -10px 0 10px;
+    background-size: cover;
+  }
+
   .menu__item {
     height: 40px;
     line-height: 40px;
@@ -119,6 +129,10 @@
     text-align: center;
     font-size: var(--size-small);
     cursor: pointer;
+  }
+
+  .menu__item.el-dropdown {
+    margin-top: 1px;
   }
 
   .content {
