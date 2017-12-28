@@ -44,7 +44,7 @@
     },
     methods: {
       handleTabClick() {
-        this.$router.push({ query: { ...this.$route.query, tab: this.activeTab }})
+        this.$router.push({query: {...this.$route.query, tab: this.activeTab}})
       },
       fetchRepos() {
         api.getUser(this.username).then(resp => {
@@ -55,17 +55,25 @@
           this.repos = resp.data
           this.loadingRepos = false
         })
+      },
+      syncTab() {
+        const tab = this.$route.query['tab']
+        if (this.tabs.includes(tab)) {
+          this.activeTab = tab
+        } else {
+          this.activeTab = 'repo'
+        }
       }
     },
     mounted: function () {
       this.fetchRepos()
-      const tab = this.$route.query['tab']
-      if (this.tabs.includes(tab)) {
-        this.activeTab = tab
-      } else {
-        this.activeTab = 'repo'
-      }
+      this.syncTab()
     },
+    watch: {
+      '$route'() {
+        this.syncTab()
+      }
+    }
   }
 </script>
 
