@@ -4,10 +4,10 @@ from flask import Blueprint
 from flask import g
 from flask import jsonify, request
 
-from voluptuous import Required
-from voluptuous import Coerce, Any
+from voluptuous import Required, Any, All
+from voluptuous import Coerce, Match, Length
 
-from morio.core.error import NotFoundError, ConflictException
+from morio.core.error import ConflictException, NotFoundError
 from morio.core.auth import login_required, login_optional
 from morio.core.pagination import with_pagination
 from morio.model import db
@@ -17,6 +17,14 @@ from .utils import verify_payload, retrieve_user_repo
 
 
 bp = Blueprint('core', __name__)
+
+
+@bp.route('/users/<name>')
+def get_user(name):
+    src = User.query.filter_by(name=name).first()
+    if not src:
+        raise NotFoundError(description='User not found')
+    return jsonify(src)
 
 
 @bp.route('/users/<username>/repos')
@@ -53,7 +61,11 @@ def repo_cards(username, repo_name):
 @login_required
 def create_repo():
     schema = {
-        Required('name'): str,
+        Required('name'): All(
+            Match(r'^[a-zA-Z0-9_.-]+$',
+                  msg='repository name has invalid symbol'),
+            Length(min=1, max=30, msg='repository name too long')
+        ),
         Required('desc'): Any(str, None),
         Required('private'): Coerce(bool),
     }

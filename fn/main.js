@@ -8,13 +8,13 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 
 import {
-  Button, Card, Form, FormItem, Input, Menu, MenuItem,
-  Switch, Row, Col,
-  Dropdown, DropdownMenu, DropdownItem
+  Button, Card, Col, Dropdown, DropdownItem, DropdownMenu, Form,
+  FormItem, Input, Menu, MenuItem, Row, Switch, TabPane, Tabs,
 } from 'element-ui'
 import routerConfig from './views/index'
 import store from './store/index';
 import components from './components/index'
+import VueTimeago from 'vue-timeago'
 
 Vue.use(VueRouter)
 Vue.use(components)
@@ -32,6 +32,15 @@ Vue.use(Col)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(TabPane)
+Vue.use(Tabs)
+
+Vue.use(VueTimeago, {
+  locale: 'en-US',
+  locales: {
+    'en-US': require('vue-timeago/locales/en-US.json'),
+  }
+})
 
 const router = new VueRouter(routerConfig);
 

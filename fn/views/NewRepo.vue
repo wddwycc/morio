@@ -40,7 +40,7 @@
             return
           }
           api.newRepo(this.form).then(resp => {
-            this.$router.push('/')
+            this.$router.push(`/user/${resp.data.username}/${resp.data.name}`)
           })
         })
       },

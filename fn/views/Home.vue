@@ -27,20 +27,4 @@
 </script>
 
 <style>
-  .repo-cell {
-    margin-bottom: 18px;
-  }
-
-  .repo-cell__name {
-  }
-
-  .repo-cell__date {
-    color: var(--color-grey);
-    font-size: var(--size-x-small);
-  }
-
-  .repo-cell__desc {
-    margin-left: 18px;
-    color: var(--color-light-grey);
-  }
 </style>

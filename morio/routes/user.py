@@ -1,11 +1,12 @@
 import os
 from uuid import uuid4
+
 import pagan
-from flask import current_app
 from flask import Blueprint
+from flask import current_app
 from flask import request, jsonify, g
-from voluptuous import Required, Optional, All, Url
 from voluptuous import Email, Match, Length
+from voluptuous import Required, Optional, All, Url
 
 from morio.core.auth import login_required
 from morio.core.error import ConflictException, SignatureError
