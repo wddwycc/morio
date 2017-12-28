@@ -71,7 +71,7 @@
     computed: {
       isOwner: function () {
         // todo: replace with vuex
-        return this.repo.username === 'duan'
+        return this.$store.state.user.name === this.repo.username
       }
     },
     methods: {

@@ -4,20 +4,25 @@
       <ul class="menu__left">
         <router-link to="/" tag="li" class="menu__item dim logo">Morio</router-link>
       </ul>
-      <ul class="menu__right" v-if="!this.$store.state.user.loading">
-        <li v-if="this.$store.state.user.name">
-          <ul class="menu__login">
-            <router-link to="/new" tag="li" class="el-icon-plus dim menu__item"></router-link>
-            <li class="menu__item" @click="logout()">Logout</li>
-          </ul>
-        </li>
-        <li v-else>
-          <ul class="menu__visitor">
-            <router-link to="/login" tag="li" class="menu__item">Login</router-link>
-            <router-link to="/register" tag="li" class="menu__item">Register</router-link>
-          </ul>
-        </li>
-      </ul>
+      <div class="menu__right" v-if="!this.$store.state.user.loading">
+        <ul class="menu__login" v-if="this.$store.state.user.name">
+          <router-link to="/new" tag="li" class="el-icon-plus dim menu__item"></router-link>
+          <li class="menu__item">
+            <el-dropdown @command="handleDropdown" class="menu__item">
+                <span class="el-dropdown-link"> {{ this.$store.state.user.name }} <i class="el-icon-arrow-down"></i>
+                </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="toSetting">Setting</el-dropdown-item>
+                <el-dropdown-item divided command="logout">Logout</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </li>
+        </ul>
+        <ul class="menu__visitor" v-else>
+          <router-link to="/login" tag="li" class="menu__item">Login</router-link>
+          <router-link to="/register" tag="li" class="menu__item">Register</router-link>
+        </ul>
+      </div>
     </div>
     <div class="content">
       <router-view></router-view>
@@ -31,9 +36,16 @@
 
   export default {
     methods: {
+      toSetting() {
+        this.$router.push('/setting')
+      },
       logout() {
         db.del('authToken')
         this.$store.commit('dropUser')
+        this.$router.push('/')
+      },
+      handleDropdown(cmd) {
+        this[cmd]()
       }
     },
     mounted: function () {
@@ -52,9 +64,10 @@
     margin: 0 auto;
   }
 
-  .logo {
+  .menu__item.logo {
     font-weight: bold;
     font-size: var(--size-large);
+    color: var(--color-black);
   }
 
   .menu {
@@ -102,7 +115,9 @@
     padding: 0 10px;
     box-sizing: border-box;
     display: block;
+    color: var(--color-grey);
     text-align: center;
+    font-size: var(--size-small);
     cursor: pointer;
   }
 
