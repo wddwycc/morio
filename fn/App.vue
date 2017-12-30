@@ -54,6 +54,10 @@
       }
     },
     mounted: function () {
+      const token = db.get('authToken')
+      if (!token) {
+        this.$store.commit('loadUser', null)
+      }
       api.me().then(resp => {
         this.$store.commit('loadUser', resp.data)
       }, () => {
