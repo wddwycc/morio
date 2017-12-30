@@ -2,7 +2,6 @@
   <div class="repo">
     <div v-show="!loading">
       <h1>
-        <!--todo: replace with load function-->
         <router-link :to="{name: 'User', params: { username: repo.username }}">{{ repo.username }}</router-link>
         / {{ repo.name }}
       </h1>
@@ -10,7 +9,6 @@
       <div v-if="isOwner" class="repo__top-right">
         <el-button v-if="!editing" type="primary" icon="el-icon-plus" size="mini" @click="editing = true">New</el-button>
         <el-button v-if="editing" icon="el-icon-close" size="mini" @click="editing = false">Exit</el-button>
-        <el-button icon="el-icon-setting" size="mini"></el-button>
       </div>
 
       <transition name="fade">
@@ -37,22 +35,18 @@
         </div>
       </transition>
 
-      <el-card v-for="card in cards" :key="card.id">
-        <div slot="header">
-          {{ card['side_a'] }}
-        </div>
-        <div>
-          {{ card['side_b'] }}
-        </div>
-        <div>
-        </div>
-      </el-card>
+      <el-tabs v-model="activeTab" @tab-click="handleTabClick">
+        <el-tab-pane label="Cards" name="cards"></el-tab-pane>
+        <el-tab-pane label="Setting" name="setting"></el-tab-pane>
+      </el-tabs>
+
+      <router-view :cards="this.cards"></router-view>
     </div>
   </div>
 </template>
 
 <script>
-  import api from '../api'
+  import api from '../../api/index'
   import {Message} from 'element-ui'
 
   export default {
@@ -64,14 +58,16 @@
           side_b: '',
         },
         loading: true,
+        // cards, setting
+        activeTab: 'cards',
         repo: {},
-        cards: []
+        cards: [],
       }
     },
     computed: {
       isOwner: function () {
         return this.$store.state.user.name === this.repo.username
-      }
+      },
     },
     methods: {
       newCard: function () {
@@ -85,9 +81,21 @@
             this.cards = resp.data
           })
         })
+      },
+      handleTabClick: function () {
+        if (this.activeTab === 'cards') {
+          this.$router.push(`/user/${this.repo.username}/${this.repo.name}`)
+        } else {
+          this.$router.push(`/user/${this.repo.username}/${this.repo.name}/setting`)
+        }
       }
     },
     mounted: function () {
+      if (this.$route.name === 'Repo') {
+        this.activeTab = 'cards'
+      } else {
+        this.activeTab = 'setting'
+      }
       api.getRepo(
         this.$route.params['username'],
         this.$route.params['repo_name'],
@@ -122,6 +130,5 @@
   .repo-editor__submit {
     margin-top: 10px;
   }
-
 </style>
 

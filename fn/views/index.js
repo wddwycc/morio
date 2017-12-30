@@ -1,9 +1,13 @@
 import Home from './Home.vue'
 import Login from './Login.vue'
 import Register from './Register.vue'
-import Repo from './Repo.vue'
+import Repo from './Repo/index.vue'
+import RepoCards from './Repo/Cards.vue'
+import RepoSetting from './Repo/Setting.vue'
 import NewRepo from './NewRepo.vue'
-import User from './User.vue'
+import User from './User/index.vue'
+import UserRepos from './User/Repos.vue'
+import UserStars from './User/Stars.vue'
 
 
 const routes = [
@@ -31,14 +35,35 @@ const routes = [
   },
   {
     path: '/user/:username',
-    name: 'User',
     component: User,
+    children: [
+      {
+        path: '',
+        name: 'User',
+        component: UserRepos,
+      },
+      {
+        path: '',
+        name: 'UserStars',
+        component: UserStars,
+      }
+    ],
   },
   {
     path: '/user/:username/:repo_name',
-    name: 'Repo',
     component: Repo,
-    props: true,
+    children: [
+      {
+        path: '',
+        name: 'Repo',
+        component: RepoCards,
+      },
+      {
+        path: 'setting',
+        name: 'RepoSetting',
+        component: RepoSetting,
+      },
+    ],
   },
 ];
 

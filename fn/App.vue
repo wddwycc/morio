@@ -131,7 +131,6 @@
   }
 
   .menu__item.logo {
-    padding-left: 0;
     font-weight: bold;
     font-size: var(--size-large);
     color: var(--color-black);
