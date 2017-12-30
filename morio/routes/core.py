@@ -46,6 +46,24 @@ def get_repo(username, repo_name):
     return jsonify(repo)
 
 
+@bp.route('/users/<username>/repos/<repo_name>', methods=['PUT'])
+@login_optional
+def update_repo(username, repo_name):
+    _, repo = retrieve_user_repo(username, repo_name)
+    schema = {
+        Required('side_a_name'): Any(str, None),
+        Required('side_b_name'): Any(str, None),
+        Required('desc'): Any(str, None),
+        Required('private'): Coerce(bool),
+    }
+    payload = verify_payload(request.get_json(), schema)
+    for key, value in payload.items():
+        setattr(repo, key, value)
+    with db.auto_commit():
+        db.session.add(repo)
+    return jsonify(repo)
+
+
 @bp.route('/users/<username>/repos/<repo_name>/cards')
 @login_optional
 @with_pagination

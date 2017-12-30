@@ -1,6 +1,6 @@
 <template>
   <div class="repo">
-    <div v-show="!loading">
+    <div v-if="!loading">
       <h1>
         <router-link :to="{name: 'User', params: { username: repo.username }}">{{ repo.username }}</router-link>
         / {{ repo.name }}
@@ -18,7 +18,7 @@
               <el-input
                 type="textarea"
                 :rows="2"
-                placeholder="Side A"
+                :placeholder="repo['side_a_name'] || 'Side A'"
                 v-model="editorForm.side_a">
               </el-input>
             </el-col>
@@ -26,7 +26,7 @@
               <el-input
                 type="textarea"
                 :rows="2"
-                placeholder="Side B"
+                :placeholder="repo['side_b_name'] || 'Side B'"
                 v-model="editorForm.side_b">
               </el-input>
             </el-col>
@@ -40,7 +40,7 @@
         <el-tab-pane label="Setting" name="setting"></el-tab-pane>
       </el-tabs>
 
-      <router-view :cards="this.cards"></router-view>
+      <router-view :cards="this.cards" :repo="this.repo"></router-view>
     </div>
   </div>
 </template>

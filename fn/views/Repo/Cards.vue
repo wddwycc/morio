@@ -2,10 +2,10 @@
   <div>
     <el-card v-for="card in cards" :key="card.id" class="card">
       <div>
-        Side A: {{ card['side_a'] }}
+        <span class="card__key">{{ repo['side_a_name'] || 'Side A' }}:</span> <span class="card__value">{{ card['side_a'] }}</span>
       </div>
       <div>
-        Side B: {{ card['side_b'] }}
+        <span class="card__key">{{ repo['side_b_name'] || 'Side B' }}:</span> <span class="card__value">{{ card['side_b'] }}</span>
       </div>
     </el-card>
   </div>
@@ -13,12 +13,20 @@
 
 <script>
   export default {
-    props: ['cards'],
+    props: ['repo', 'cards'],
   }
 </script>
 
 <style scoped>
   .card {
     margin-bottom: 10px;
+  }
+
+  .card__key {
+    color: var(--color-light-grey);
+  }
+
+  .card__value {
+    color: var(--color-black);
   }
 </style>

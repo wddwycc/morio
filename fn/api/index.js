@@ -48,11 +48,14 @@ export default {
   getRepo: (username, repoName) => {
     return client.get(`/users/${username}/repos/${repoName}`)
   },
+  updateRepo: (username, repoName, data) => {
+    return client.put(`/users/${username}/repos/${repoName}`, data)
+  },
   getCards: (username, repoName) => {
     return client.get(`/users/${username}/repos/${repoName}/cards`)
   },
   newRepo: (data) => {
-    return client.post('/repos', {...data})
+    return client.post('/repos', data)
   },
   newCard: (data) => {
     return client.post(`/cards`, data)

@@ -15,6 +15,9 @@ class Repository(db.Model):
 
     private = Column(Boolean, nullable=False)
 
+    side_a_name = Column(String(30))
+    side_b_name = Column(String(30))
+
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(
         DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
@@ -31,6 +34,9 @@ class Repository(db.Model):
             name=self.name,
             desc=self.desc,
             username=self.user.name,
+            private=self.private,
+            side_a_name=self.side_a_name,
+            side_b_name=self.side_b_name,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
