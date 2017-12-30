@@ -88,6 +88,20 @@
         } else {
           this.$router.push(`/user/${this.repo.username}/${this.repo.name}/setting`)
         }
+      },
+      reload: function () {
+        api.getRepo(
+          this.$route.params['username'],
+          this.$route.params['repo_name'],
+        ).then(resp => {
+          this.repo = resp.data
+          api.getCards(
+            this.repo.username, this.repo.name
+          ).then(resp => {
+            this.cards = resp.data
+            this.loading = false
+          })
+        })
       }
     },
     mounted: function () {
@@ -96,18 +110,7 @@
       } else {
         this.activeTab = 'setting'
       }
-      api.getRepo(
-        this.$route.params['username'],
-        this.$route.params['repo_name'],
-      ).then(resp => {
-        this.repo = resp.data
-        api.getCards(
-          this.repo.username, this.repo.name
-        ).then(resp => {
-          this.cards = resp.data
-          this.loading = false
-        })
-      })
+      this.reload()
     }
   }
 </script>

@@ -29,6 +29,8 @@ def retrieve_user_repo(username, repo_name):
     if not user:
         raise NotFoundError(description='User not found')
     repo = Repository.query.filter_by(user_id=user.id, name=repo_name).first()
-    if not repo or (repo.private and g.user.id != repo.user_id):
+    if not repo or (
+        repo.private and (not g.user or g.user.id != repo.user_id)
+    ):
         raise NotFoundError(description='Repo not found')
     return user, repo

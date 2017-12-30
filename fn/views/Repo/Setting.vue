@@ -21,13 +21,14 @@
 
 <script>
   import {Message} from 'element-ui'
+  import Vue from 'vue'
   import api from '../../api'
 
   export default {
     props: ['repo'],
     data() {
       return {
-        form: this.repo,
+        form: Vue.util.extend({}, this.repo),
         rules: {},
       }
     },
@@ -35,6 +36,7 @@
       onSubmit: function () {
         api.updateRepo(this.repo.username, this.repo.name, this.form).then(() => {
           Message.success('Update success')
+          this.$parent.reload()
         })
       }
     }

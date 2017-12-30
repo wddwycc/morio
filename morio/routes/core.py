@@ -7,7 +7,7 @@ from flask import jsonify, request
 from voluptuous import Required, Any, All
 from voluptuous import Coerce, Match, Length
 
-from morio.core.error import ConflictException, NotFoundError
+from morio.core.error import ConflictException, NotFoundError, SignatureError
 from morio.core.auth import login_required, login_optional
 from morio.core.pagination import with_pagination
 from morio.model import db
@@ -47,9 +47,11 @@ def get_repo(username, repo_name):
 
 
 @bp.route('/users/<username>/repos/<repo_name>', methods=['PUT'])
-@login_optional
+@login_required
 def update_repo(username, repo_name):
-    _, repo = retrieve_user_repo(username, repo_name)
+    user, repo = retrieve_user_repo(username, repo_name)
+    if user.id != g.user.id:
+        raise SignatureError
     schema = {
         Required('side_a_name'): Any(str, None),
         Required('side_b_name'): Any(str, None),
