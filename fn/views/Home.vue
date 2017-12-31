@@ -1,8 +1,29 @@
 <template>
   <div>
     <div v-if="!loading && courses.length === 0 && repos.length === 0">
-      This is landing page
-      <!--  todo: landing page -->
+      <div class="lp__top">
+        <h1 class="lp__title">Web service for memory</h1>
+        <p>Memorizing norms and concepts is usually necessary when entering a new area.</p>
+        <p>If inefficient, it would be painful and do harm to one's passion.</p>
+        <p>Morio borns to bridge the gap</p>
+      </div>
+      <ul class="lp__features">
+        <li class="lp__feature">
+          <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/sprout.png')})` }"></div>
+          <h2 class="lp__feature-name">Free</h2>
+          <p>Customize contents and corresponding ways you want to memorize stuff</p>
+        </li>
+        <li class="lp__feature">
+          <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/flask.png')})` }"></div>
+          <h2 class="lp__feature-name">Efficiency</h2>
+          <p>Memorize everything through proper methodology like forgetting curve</p>
+        </li>
+        <li class="lp__feature">
+          <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/globe.png')})` }"></div>
+          <h2 class="lp__feature-name">Community</h2>
+          <p>Share your knowledge base and search your interested repository here</p>
+        </li>
+      </ul>
     </div>
     <div v-else>
       <div v-if="courses.length > 0">
@@ -17,7 +38,6 @@
         <repo-cell v-for="repo in repos" :data="repo" :key="repo.id"></repo-cell>
       </div>
     </div>
-
 
     <el-dialog
       title="提示"
@@ -71,7 +91,8 @@
               this.fetchCourses()
             })
           })
-          .catch(_ => {})
+          .catch(_ => {
+          })
       }
     },
     mounted: function () {
@@ -88,6 +109,21 @@
 </script>
 
 <style>
+  .lp__top {
+    width: 600px;
+    margin: 0 auto 100px;
+  }
+
+  .lp__title {
+    font-size: 2em;
+    margin: 60px 0 30px;
+  }
+
+  .lp__top > p {
+    font-size: 1em;
+    margin: 4px 0;
+  }
+
   .course-cell {
     margin-bottom: 10px;
     position: relative;
@@ -97,5 +133,32 @@
     position: absolute;
     top: 16px;
     right: 16px;
+  }
+
+  .lp__features {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+  }
+
+  .lp__feature {
+    width: 240px;
+    margin: 0 20px;
+  }
+
+  .lp__feature > p {
+    text-align: center;
+    color: var(--color-grey);
+  }
+
+  .lp__feature-name {
+    text-align: center;
+  }
+
+  .lp__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    background-size: contain;
   }
 </style>

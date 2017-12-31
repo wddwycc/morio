@@ -47,7 +47,7 @@
       logout() {
         db.del('authToken')
         this.$store.commit('dropUser')
-        this.$router.push('/')
+        this.$router.go(0)
       },
       handleDropdown(cmd) {
         this[cmd]()
@@ -72,7 +72,7 @@
   }
 
   .menu {
-    border-bottom: solid 1px var(--color-x-light-grey);
+    border-bottom: 1px solid var(--color-x-light-grey);
   }
 
   .menu__inner {
