@@ -77,6 +77,15 @@ def repo_cards(username, repo_name):
     return jsonify(cards)
 
 
+@bp.route('/repos')
+@login_required
+@with_pagination
+def get_own_repos():
+    repos = Repository.query.filter_by(user_id=g.user.id) \
+        .limit(g.limit).offset(g.offset).all()
+    return jsonify(repos)
+
+
 @bp.route('/repos', methods=['POST'])
 @login_required
 def create_repo():
@@ -99,6 +108,8 @@ def create_repo():
         db.session.add(repo)
     return jsonify(repo)
 
+
+# MARK: cards
 
 @bp.route('/cards', methods=['POST'])
 @login_required
@@ -133,6 +144,16 @@ def delete_repo_card(card_id):
     return jsonify({})
 
 
+# MARK: courses
+
+@bp.route('/courses')
+@login_required
+def get_courses():
+    rv = Course.query.filter_by(user_id=g.user.id) \
+        .order_by(desc(Course.updated_at)).all()
+    return jsonify(rv)
+
+
 @bp.route('/courses', methods=['POST'])
 @login_required
 def create_course():
@@ -143,7 +164,18 @@ def create_course():
     repo = Repository.query.get(payload['repository_id'])
     if not repo or repo.private:
         raise NotFoundError
-    course = Course(**payload)
+    course = Course(**payload, user_id=g.user.id)
+    with db.auto_commit():
+        db.session.add(course)
+    return jsonify(course)
+
+
+@bp.route('/courses/<course_id>', methods=['POST'])
+@login_required
+def get_course(course_id):
+    course = Course.query.get(course_id)
+    if course.user_id != g.user.id:
+        return
     with db.auto_commit():
         db.session.add(course)
     return jsonify(course)

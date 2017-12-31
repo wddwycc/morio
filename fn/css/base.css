@@ -14,5 +14,10 @@ a:hover {
 
 h1 {
   font-size: var(--size-extra-large);
+  padding: 12px 0;
+}
+
+h2 {
+  font-size: var(--size-large);
   padding: 10px 0;
 }

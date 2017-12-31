@@ -56,6 +56,13 @@ export default {
   getCards: (username, repoName) => {
     return client.get(`/users/${username}/repos/${repoName}/cards`)
   },
+  // personal query
+  myRepos: () => {
+    return client.get('/repos')
+  },
+  myCourses: () => {
+    return client.get('/courses')
+  },
   // updates
   newRepo: (data) => {
     return client.post('/repos', data)
@@ -65,5 +72,11 @@ export default {
   },
   delCard: (id) => {
     return client.delete(`/cards/${id}`)
+  },
+  newCourse: (data) => {
+    return client.post('/courses', data)
+  },
+  delCourse: (id) => {
+    return client.delete(`/courses/${id}`)
   },
 }

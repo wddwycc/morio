@@ -30,7 +30,6 @@ $ pipenv install
 Create `local_settings.py`, fill it with
 
 ```python
-DEBUG = True
 import os
 
 _here = os.path.abspath(os.path.dirname(__file__))

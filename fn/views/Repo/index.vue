@@ -7,9 +7,9 @@
       </h1>
 
       <div v-if="isOwner" class="repo__top-right">
-        <el-button v-if="!editing" type="primary" icon="el-icon-plus" size="mini" @click="editing = true">New</el-button>
-        <el-button v-else icon="el-icon-close" size="mini" @click="editing = false">Exit</el-button>
-        <el-button v-else icon="el-icon-close" size="mini" @click="editing = false">Exit</el-button>
+        <el-button v-if="!editing" type="primary" icon="el-icon-plus" size="mini" @click="editing = true">Card</el-button>
+        <el-button v-else icon="el-icon-close" size="mini" @click="editing = false">End Edit</el-button>
+        <el-button icon="el-icon-plus" size="mini" @click="newCourse()">Course</el-button>
       </div>
 
       <transition name="fade">
@@ -75,6 +75,8 @@
         api.newCard(
           {repository_id: this.repo.id, ...this.editorForm}
         ).then(() => {
+          this.editorForm.side_a = ''
+          this.editorForm.side_b = ''
           Message.success('Created card')
           api.getCards(
             this.repo.username, this.repo.name
@@ -104,6 +106,12 @@
         ).then(resp => {
           this.cards = resp.data
           this.loading = false
+        })
+      },
+      newCourse: function () {
+        api.newCourse({repository_id: this.repo.id}).then(() => {
+          Message.success('created new course')
+          this.$router.push('/')
         })
       },
     },

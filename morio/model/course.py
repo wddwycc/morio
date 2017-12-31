@@ -17,7 +17,8 @@ class Course(db.Model):
         DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
     def to_dict(self):
+        repo = self.repository
         return dict(
             id=self.id,
-            repository=self.repository,
+            repository=repo.to_dict(),
         )
