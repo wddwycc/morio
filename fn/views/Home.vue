@@ -5,13 +5,13 @@
         <h1 class="lp__title">Web service for memory</h1>
         <p>Memorizing norms and concepts is usually necessary when entering a new area.</p>
         <p>If inefficient, it would be painful and do harm to one's passion.</p>
-        <p>Morio borns to bridge the gap</p>
+        <p>Morio borns to bridge the gap.</p>
       </div>
       <ul class="lp__features">
         <li class="lp__feature">
           <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/sprout.png')})` }"></div>
           <h2 class="lp__feature-name">Free</h2>
-          <p>Customize contents and corresponding ways you want to memorize stuff</p>
+          <p>Customize contents and corresponding ways you want to memorize</p>
         </li>
         <li class="lp__feature">
           <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/flask.png')})` }"></div>
@@ -110,18 +110,19 @@
 
 <style>
   .lp__top {
-    width: 600px;
+    max-width: 600px;
     margin: 0 auto 100px;
   }
 
   .lp__title {
     font-size: 2em;
-    margin: 60px 0 30px;
+    margin: 100px 0 30px;
   }
 
   .lp__top > p {
-    font-size: 1em;
     margin: 4px 0;
+    font-size: 1em;
+    color: var(--color-grey);
   }
 
   .course-cell {
@@ -143,7 +144,7 @@
 
   .lp__feature {
     width: 240px;
-    margin: 0 20px;
+    margin: 0 20px 20px;
   }
 
   .lp__feature > p {
@@ -160,5 +161,19 @@
     height: 64px;
     margin: 0 auto;
     background-size: contain;
+  }
+
+  @media screen and (max-width: 420px) {
+    .lp__top {
+      margin-bottom: 30px;
+    }
+    .lp__title {
+      margin-top: 20px;
+      font-size: 1.5em;
+    }
+
+    .lp__features {
+      flex-direction: column;
+    }
   }
 </style>
