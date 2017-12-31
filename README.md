@@ -31,7 +31,13 @@ Create `local_settings.py`, fill it with
 
 ```python
 DEBUG = True
+import os
+
+_here = os.path.abspath(os.path.dirname(__file__))
+
+DEBUG = True
 SECRET_KEY = 'morio.secret'
+UPLOAD_FOLDER = os.path.join(_here, 'upload')
 SQLALCHEMY_DATABASE_URI = (
     'postgresql://morio:pw@localhost:5432/morio'
 )

@@ -30,6 +30,7 @@ client.interceptors.response.use(response => {
 });
 
 export default {
+  // user
   me: () => {
     return client.get('/user/me')
   },
@@ -39,6 +40,7 @@ export default {
   login: (data) => {
     return client.post('/user/login', {...data})
   },
+  // query
   getUser: (username) => {
     return client.get(`/users/${username}`)
   },
@@ -54,6 +56,7 @@ export default {
   getCards: (username, repoName) => {
     return client.get(`/users/${username}/repos/${repoName}/cards`)
   },
+  // updates
   newRepo: (data) => {
     return client.post('/repos', data)
   },
