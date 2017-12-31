@@ -120,6 +120,19 @@ def create_repo_card():
     return jsonify(card)
 
 
+@bp.route('/cards/<card_id>', methods=['DELETE'])
+@login_required
+def delete_repo_card(card_id):
+    card = Card.query.get(card_id)
+    if not card:
+        raise NotFoundError
+    if card.repository.user_id != g.user.id:
+        raise SignatureError(description='Permission denied')
+    with db.auto_commit():
+        db.session.delete(card)
+    return jsonify({})
+
+
 @bp.route('/courses', methods=['POST'])
 @login_required
 def create_course():
@@ -143,7 +156,7 @@ def update_course(course_id):
     if not course:
         raise NotFoundError
     if course.user_id != g.user.id:
-        raise SignatureError(description='Not the owner')
+        raise SignatureError(description='Permission denied')
     with db.auto_commit():
-        db.session.remove(course)
+        db.session.delete(course)
     return jsonify({})

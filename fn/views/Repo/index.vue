@@ -41,7 +41,7 @@
         <el-tab-pane label="Setting" name="setting"></el-tab-pane>
       </el-tabs>
 
-      <router-view :cards="this.cards" :repo="this.repo"></router-view>
+      <router-view :cards="this.cards" :repo="this.repo" :isOwner="this.isOwner"></router-view>
     </div>
   </div>
 </template>
@@ -90,20 +90,22 @@
           this.$router.push(`/user/${this.repo.username}/${this.repo.name}/setting`)
         }
       },
-      reload: function () {
+      reloadRepo: function () {
         api.getRepo(
           this.$route.params['username'],
           this.$route.params['repo_name'],
         ).then(resp => {
           this.repo = resp.data
-          api.getCards(
-            this.repo.username, this.repo.name
-          ).then(resp => {
-            this.cards = resp.data
-            this.loading = false
-          })
         })
-      }
+      },
+      reloadCards: function () {
+        api.getCards(
+          this.repo.username, this.repo.name
+        ).then(resp => {
+          this.cards = resp.data
+          this.loading = false
+        })
+      },
     },
     mounted: function () {
       if (this.$route.name === 'Repo') {
@@ -111,7 +113,18 @@
       } else {
         this.activeTab = 'setting'
       }
-      this.reload()
+      api.getRepo(
+        this.$route.params['username'],
+        this.$route.params['repo_name'],
+      ).then(resp => {
+        this.repo = resp.data
+        api.getCards(
+          this.repo.username, this.repo.name
+        ).then(resp => {
+          this.cards = resp.data
+          this.loading = false
+        })
+      })
     }
   }
 </script>

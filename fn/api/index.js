@@ -59,5 +59,8 @@ export default {
   },
   newCard: (data) => {
     return client.post(`/cards`, data)
-  }
+  },
+  delCard: (id) => {
+    return client.delete(`/cards/${id}`)
+  },
 }
