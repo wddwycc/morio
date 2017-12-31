@@ -22,7 +22,8 @@ class Repository(db.Model):
     updated_at = Column(
         DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
-    repositories = relationship('Card', backref='repository', lazy='dynamic')
+    cards = relationship('Card', backref='repository', lazy='dynamic')
+    courses = relationship('Course', backref='repository', lazy='dynamic')
 
     __table_args__ = (
         UniqueConstraint('user_id', 'name', name='_user_repo_uc'),

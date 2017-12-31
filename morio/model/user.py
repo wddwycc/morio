@@ -29,6 +29,7 @@ class User(db.Model):
     )
 
     repositories = relationship('Repository', backref='user', lazy='dynamic')
+    courses = relationship('Course', backref='user', lazy='dynamic')
 
     def to_dict(self):
         return dict(

@@ -35,7 +35,7 @@
     methods: {
       onSubmit: function () {
         api.updateRepo(this.repo.username, this.repo.name, this.form).then(() => {
-          Message.success('Update success')
+          Message.success('Updated')
           this.$parent.reload()
         })
       }

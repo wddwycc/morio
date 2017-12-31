@@ -8,7 +8,8 @@
 
       <div v-if="isOwner" class="repo__top-right">
         <el-button v-if="!editing" type="primary" icon="el-icon-plus" size="mini" @click="editing = true">New</el-button>
-        <el-button v-if="editing" icon="el-icon-close" size="mini" @click="editing = false">Exit</el-button>
+        <el-button v-else icon="el-icon-close" size="mini" @click="editing = false">Exit</el-button>
+        <el-button v-else icon="el-icon-close" size="mini" @click="editing = false">Exit</el-button>
       </div>
 
       <transition name="fade">

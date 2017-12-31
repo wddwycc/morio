@@ -11,7 +11,7 @@ from morio.core.error import ConflictException, NotFoundError, SignatureError
 from morio.core.auth import login_required, login_optional
 from morio.core.pagination import with_pagination
 from morio.model import db
-from morio.model import Repository, Card, User
+from morio.model import Repository, Card, User, Course
 
 from .utils import verify_payload, retrieve_user_repo
 
@@ -101,7 +101,7 @@ def create_repo():
 
 
 @bp.route('/cards', methods=['POST'])
-@login_optional
+@login_required
 def create_repo_card():
     schema = {
         Required('repository_id'): int,
@@ -109,7 +109,41 @@ def create_repo_card():
         Required('side_b'): str,
     }
     payload = verify_payload(request.get_json(), schema)
+    repo = Repository.query.get(payload['repository_id'])
+    if not repo:
+        raise NotFoundError
+    if repo.user_id != g.user.id:
+        raise SignatureError
     card = Card(**payload)
     with db.auto_commit():
         db.session.add(card)
     return jsonify(card)
+
+
+@bp.route('/courses', methods=['POST'])
+@login_required
+def create_course():
+    schema = {
+        Required('repository_id'): int,
+    }
+    payload = verify_payload(request.get_json(), schema)
+    repo = Repository.query.get(payload['repository_id'])
+    if not repo or repo.private:
+        raise NotFoundError
+    course = Course(**payload)
+    with db.auto_commit():
+        db.session.add(course)
+    return jsonify(course)
+
+
+@bp.route('/courses/<course_id>', methods=['DELETE'])
+@login_required
+def update_course(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        raise NotFoundError
+    if course.user_id != g.user.id:
+        raise SignatureError(description='Not the owner')
+    with db.auto_commit():
+        db.session.remove(course)
+    return jsonify({})
