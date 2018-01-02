@@ -191,14 +191,16 @@ def course_next_card(course_id):
         .filter_by(course_id=course_id, type=CourseAction.EASY)
     src = Card.query.filter_by(repository_id=course.repository_id) \
         .filter(~Card.id.in_(easy_ids)).order_by(db_func.random()).first()
+    if not src:
+        return jsonify({})
     payload = request.get_json()
     if payload:
         schema = {
-            Required('card_id'): str,
-            Required('type'): Any(CourseAction.types),
+            Required('card_id'): int,
+            Required('type'): Any(*CourseAction.types),
         }
         payload = verify_payload(payload, schema)
         action = CourseAction(**payload, course_id=course_id)
         with db.auto_commit():
             db.session.add(action)
-    return jsonify(src)
+    return jsonify({**src.to_dict(), 'repo': src.repository})
