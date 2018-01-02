@@ -2,7 +2,8 @@
   <div>
     <div v-if="!loading && courses.length === 0 && repos.length === 0">
       <div class="lp__top">
-        <h1 class="lp__title">Web service for memory</h1>
+        <h1 class="lp__title">Morio</h1>
+        <h2 class="lp__subtitle">Web service for memory</h2>
         <p>Memorizing norms and concepts is usually necessary when entering a new area.</p>
         <p>If inefficient, it would be painful and do harm to one's passion.</p>
         <p>Morio borns to bridge the gap.</p>
@@ -117,8 +118,13 @@
   }
 
   .lp__title {
-    font-size: 2em;
-    margin: 100px 0 30px;
+    font-size: 2.4em;
+    margin: 100px 0 0;
+    padding-bottom: 0;
+  }
+
+  .lp__subtitle {
+    margin-top: 0;
   }
 
   .lp__top > p {

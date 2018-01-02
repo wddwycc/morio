@@ -3,7 +3,7 @@
     <nav class="menu">
       <div class="menu__inner">
         <ul class="menu__left">
-          <router-link to="/" tag="li" class="menu__item dim logo">Morio</router-link>
+          <router-link to="/" tag="li" class="menu__item dim logo"></router-link>
         </ul>
         <div class="menu__right" v-if="!this.$store.state.user.loading">
           <ul class="menu__login" v-if="this.$store.state.user.name">
@@ -128,16 +128,22 @@
     padding: 0 10px;
     box-sizing: border-box;
     display: block;
-    color: var(--color-grey);
+    color: var(--color-black);
     text-align: center;
     font-size: var(--size-small);
     cursor: pointer;
+    opacity: .7;
   }
 
-  .menu__item.logo {
-    font-weight: bold;
-    font-size: var(--size-large);
-    color: var(--color-black);
+  .logo {
+    width: 32px;
+    height: 32px;
+    background-image: url('./assets/logo.png');
+    background-size: contain;
+  }
+
+  .menu__item:hover {
+    opacity: 1;
   }
 
   .content {
