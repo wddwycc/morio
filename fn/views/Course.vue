@@ -1,15 +1,24 @@
 <template>
+  <div>
 
+  </div>
 </template>
 
 <script>
+  import api from '../api'
+
   export default {
-    props: ['id'],
     data() {
       return {
         repo: {},
+        card: null,
       }
     },
+    mounted() {
+      api.courseNextCard(this.$route.params['id']).then(resp => {
+        this.card = resp.data
+      })
+    }
   }
 </script>
 

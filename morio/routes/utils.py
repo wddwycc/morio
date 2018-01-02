@@ -1,6 +1,6 @@
 from flask import g
-from morio.model import User, Repository
-from morio.core.error import NotFoundError
+from morio.model import User, Repository, Course
+from morio.core.error import NotFoundError, SignatureError
 from morio.core.error import JsonException
 
 
@@ -34,3 +34,12 @@ def retrieve_user_repo(username, repo_name):
     ):
         raise NotFoundError(description='Repo not found')
     return user, repo
+
+
+def retrieve_course(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        raise NotFoundError
+    if course.user_id != g.user.id:
+        raise SignatureError(description='Permission denied')
+    return course

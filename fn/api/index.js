@@ -63,6 +63,9 @@ export default {
   myCourses: () => {
     return client.get('/courses')
   },
+  courseNextCard: (course_id) => {
+    return client.post(`/courses/${course_id}/next`)
+  },
   // updates
   newRepo: (data) => {
     return client.post('/repos', data)

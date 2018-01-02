@@ -1,4 +1,5 @@
 from sqlalchemy import desc
+from sqlalchemy.sql.expression import func as db_func
 
 from flask import Blueprint
 from flask import g
@@ -10,10 +11,10 @@ from voluptuous import Coerce, Match, Length
 from morio.core.error import ConflictException, NotFoundError, SignatureError
 from morio.core.auth import login_required, login_optional
 from morio.core.pagination import with_pagination
-from morio.model import db
+from morio.model import db, CourseAction
 from morio.model import Repository, Card, User, Course
 
-from .utils import verify_payload, retrieve_user_repo
+from .utils import verify_payload, retrieve_user_repo, retrieve_course
 
 
 bp = Blueprint('core', __name__)
@@ -148,9 +149,11 @@ def delete_repo_card(card_id):
 
 @bp.route('/courses')
 @login_required
+@with_pagination
 def get_courses():
     rv = Course.query.filter_by(user_id=g.user.id) \
-        .order_by(desc(Course.updated_at)).all()
+        .order_by(desc(Course.updated_at)) \
+        .limit(g.limit).offset(g.offset).all()
     return jsonify(rv)
 
 
@@ -170,25 +173,32 @@ def create_course():
     return jsonify(course)
 
 
-@bp.route('/courses/<course_id>', methods=['POST'])
-@login_required
-def get_course(course_id):
-    course = Course.query.get(course_id)
-    if course.user_id != g.user.id:
-        return
-    with db.auto_commit():
-        db.session.add(course)
-    return jsonify(course)
-
-
 @bp.route('/courses/<course_id>', methods=['DELETE'])
 @login_required
 def update_course(course_id):
-    course = Course.query.get(course_id)
-    if not course:
-        raise NotFoundError
-    if course.user_id != g.user.id:
-        raise SignatureError(description='Permission denied')
+    course = retrieve_course(course_id)
     with db.auto_commit():
+        CourseAction.query.filter_by(course_id=course_id).delete()
         db.session.delete(course)
     return jsonify({})
+
+
+@bp.route('/courses/<course_id>/next', methods=['POST'])
+@login_required
+def course_next_card(course_id):
+    course = retrieve_course(course_id)
+    easy_ids = CourseAction.query.with_entities(CourseAction.card_id)\
+        .filter_by(course_id=course_id, type=CourseAction.EASY)
+    src = Card.query.filter_by(repository_id=course.repository_id) \
+        .filter(~Card.id.in_(easy_ids)).order_by(db_func.random()).first()
+    payload = request.get_json()
+    if payload:
+        schema = {
+            Required('card_id'): str,
+            Required('type'): Any(CourseAction.types),
+        }
+        payload = verify_payload(payload, schema)
+        action = CourseAction(**payload, course_id=course_id)
+        with db.auto_commit():
+            db.session.add(action)
+    return jsonify(src)

@@ -1,27 +1,30 @@
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy import Integer, SmallInteger, DateTime
 
 from morio.model import db
 
 
-class Course(db.Model):
+class CourseAction(db.Model):
+    EASY = 0
+    MEDIUM = 1
+    HARD = 2
+
+    types = [EASY, MEDIUM, HARD]
+
     id = Column(Integer, primary_key=True, autoincrement=True)
-    repository_id = Column(
-        Integer, ForeignKey('repository.id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    type = Column(SmallInteger, nullable=False)
+    course_id = Column(Integer, ForeignKey('course.id'), nullable=False)
+    card_id = Column(Integer, nullable=False)
 
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(
         DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
-    actions = relationship('CourseAction', backref='course', lazy='dynamic')
-
     def to_dict(self):
-        repo = self.repository
         return dict(
             id=self.id,
-            repository=repo.to_dict(),
+            course_id=self.course_id,
+            type=self.type,
         )

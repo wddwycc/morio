@@ -6,6 +6,7 @@ import RepoCards from './Repo/Cards.vue'
 import RepoSetting from './Repo/Setting.vue'
 import NewRepo from './NewRepo.vue'
 import User from './User.vue'
+import Course from './Course.vue'
 
 
 const routes = [
@@ -51,6 +52,11 @@ const routes = [
         component: RepoSetting,
       },
     ],
+  },
+  {
+    path: '/course/:id',
+    name: 'Course',
+    component: Course,
   },
 ];
 
