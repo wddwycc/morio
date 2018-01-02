@@ -51,7 +51,7 @@
       },
       handleDropdown(cmd) {
         this[cmd]()
-      }
+      },
     },
     mounted: function () {
       const token = db.get('authToken')
