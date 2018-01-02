@@ -16,6 +16,7 @@ def update_flask():
 def update_fn():
     local('npm run prod')
     put('dist/*', '/var/www/morio')
+    put('assets/*', '/var/www/morio')
 
 
 def deploy():

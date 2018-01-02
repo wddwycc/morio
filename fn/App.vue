@@ -138,6 +138,7 @@
   .logo {
     width: 32px;
     height: 32px;
+    margin-left: 12px;
     background-image: url('./assets/logo.png');
     background-size: contain;
   }
