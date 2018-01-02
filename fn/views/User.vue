@@ -13,9 +13,13 @@
     <main class="user__main">
       <el-tabs v-model="activeTab" @tab-click="handleTabClick">
         <el-tab-pane label="Repositories" name="repos">
-          <repo-cell v-for="repo in repos" :data="repo" :key="repo.id"></repo-cell>
+          <div v-if="repos.length > 0">
+            <repo-cell v-for="repo in repos" :data="repo" :key="repo.id"></repo-cell>
+          </div>
+          <empty v-else text="No repository"></empty>
         </el-tab-pane>
         <el-tab-pane label="Stars" name="stars">
+          <empty text="No Starred repository"></empty>
         </el-tab-pane>
       </el-tabs>
     </main>

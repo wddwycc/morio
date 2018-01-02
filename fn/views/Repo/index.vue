@@ -38,7 +38,7 @@
 
       <el-tabs v-model="activeTab" @tab-click="handleTabClick">
         <el-tab-pane label="Cards" name="cards"></el-tab-pane>
-        <el-tab-pane label="Setting" name="setting"></el-tab-pane>
+        <el-tab-pane v-if="isOwner" label="Setting" name="setting"></el-tab-pane>
       </el-tabs>
 
       <router-view :cards="this.cards" :repo="this.repo" :isOwner="this.isOwner"></router-view>

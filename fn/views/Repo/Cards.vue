@@ -1,16 +1,19 @@
 <template>
   <div>
-    <el-card v-for="card in cards" :key="card.id" class="card">
-      <div>
-        <span class="card__key">{{ repo['side_a_name'] || 'Side A' }}:</span>
-        <span class="card__value">{{ card['side_a'] }}</span>
-      </div>
-      <div>
-        <span class="card__key">{{ repo['side_b_name'] || 'Side B' }}:</span>
-        <span class="card__value">{{ card['side_b'] }}</span>
-      </div>
-      <el-button v-if="isOwner" class="card__del" icon="el-icon-delete" size="mini" type="text" @click="delCard(card.id)"></el-button>
-    </el-card>
+    <div v-if="cards.length > 0">
+      <el-card v-for="card in cards" :key="card.id" class="card">
+        <div>
+          <span class="card__key">{{ repo['side_a_name'] || 'Side A' }}:</span>
+          <span class="card__value">{{ card['side_a'] }}</span>
+        </div>
+        <div>
+          <span class="card__key">{{ repo['side_b_name'] || 'Side B' }}:</span>
+          <span class="card__value">{{ card['side_b'] }}</span>
+        </div>
+        <el-button v-if="isOwner" class="card__del" icon="el-icon-delete" size="mini" type="text" @click="delCard(card.id)"></el-button>
+      </el-card>
+    </div>
+    <empty text="No card" v-else></empty>
   </div>
 </template>
 
