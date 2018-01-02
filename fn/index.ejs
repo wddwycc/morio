@@ -17,19 +17,10 @@
 <body>
 <div id="app"></div>
 <script>
+  window.channelPluginSettings = {
+    "plugin_id": "28f85ce0-8204-4e39-89d2-59524aa51c7f"
+  };
   (function () {
-    if (window.CHPlugin) {
-      return window.console && console.error && console.error('Channel Plugin script included twice.');
-    }
-    var ch = {q: []};
-    ['initialize', 'checkIn', 'checkOut', 'show', 'hide', 'track', 'timeTrack'].forEach(function (e) {
-      ch[e] = function () {
-        var n = Array.prototype.slice.call(arguments);
-        n.unshift(e);
-        ch.q.push(n);
-      }
-    });
-    window.CHPlugin = ch;
     var node = document.createElement('div');
     node.id = 'ch-plugin';
     document.body.appendChild(node);
@@ -48,10 +39,6 @@
       window.addEventListener('load', async_load, false);
     }
   })();
-  window.CHPlugin.initialize({
-    pluginKey: "28f85ce0-8204-4e39-89d2-59524aa51c7f",
-    hideDefaultLauncher: false
-  });
 </script>
 </body>
 </html>
