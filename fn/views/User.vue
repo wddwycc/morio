@@ -110,4 +110,10 @@
     overflow: hidden;
   }
 
+  @media screen and (max-width: 420px) {
+    .user__aside {
+      display: none;
+    }
+  }
+
 </style>
