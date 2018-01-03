@@ -138,7 +138,7 @@
 
   .lp__title {
     font-size: 2.4em;
-    padding-bottom: 0;
+    padding: 0;
     margin-bottom: 0;
   }
 
