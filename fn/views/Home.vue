@@ -2,27 +2,36 @@
   <div>
     <div v-if="!loading && courses.length === 0 && repos.length === 0">
       <div class="lp__top">
-        <h1 class="lp__title">Morio</h1>
-        <h2 class="lp__subtitle">Web service for memory</h2>
-        <p>Memorizing norms and concepts is usually necessary when entering a new area.</p>
-        <p>If inefficient, it would be painful and do harm to one's passion.</p>
-        <p>Morio borns to bridge the gap.</p>
+        <div class="lp__logo"></div>
+        <div>
+          <h1 class="lp__title">Morio</h1>
+          <h2 class="lp__subtitle">Web service for memory</h2>
+          <p>Memorizing norms and concepts is usually necessary when entering a new area.</p>
+          <p>If inefficient, it would be painful and do harm to one's passion.</p>
+          <p>Morio borns to bridge the gap.</p>
+        </div>
       </div>
       <ul class="lp__features">
         <li class="lp__feature">
           <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/sprout.png')})` }"></div>
-          <h2 class="lp__feature-name">Free</h2>
-          <p>Customize contents and corresponding ways you want to memorize</p>
+          <div>
+            <h2 class="lp__feature-name">Free</h2>
+            <p>Customize contents and corresponding ways you want to memorize</p>
+          </div>
         </li>
         <li class="lp__feature">
           <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/flask.png')})` }"></div>
-          <h2 class="lp__feature-name">Efficiency</h2>
-          <p>Memorize everything through proper methodology like forgetting curve</p>
+          <div>
+            <h2 class="lp__feature-name">Efficiency</h2>
+            <p>Memorize everything through proper methodology like forgetting curve</p>
+          </div>
         </li>
         <li class="lp__feature">
           <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/globe.png')})` }"></div>
-          <h2 class="lp__feature-name">Community</h2>
-          <p>Share your knowledge base and search your interested repository here</p>
+          <div>
+            <h2 class="lp__feature-name">Community</h2>
+            <p>Share your knowledge base and search your interested repository here</p>
+          </div>
         </li>
       </ul>
     </div>
@@ -113,23 +122,34 @@
 
 <style>
   .lp__top {
-    max-width: 600px;
-    margin: 0 auto 100px;
+    max-width: 880px;
+    margin: 100px auto 100px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .lp__logo {
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+    background: url('../assets/logo_512.png') no-repeat;
+    background-size: contain;
   }
 
   .lp__title {
     font-size: 2.4em;
-    margin: 100px 0 0;
     padding-bottom: 0;
+    margin-bottom: 0;
   }
 
   .lp__subtitle {
     margin-top: 0;
   }
 
-  .lp__top > p {
+  .lp__top p {
     margin: 4px 0;
     font-size: 1em;
+    font-weight: 300;
     color: var(--color-grey);
   }
 
@@ -155,8 +175,9 @@
     margin: 0 20px 20px;
   }
 
-  .lp__feature > p {
+  .lp__feature p {
     text-align: center;
+    font-weight: 300;
     color: var(--color-grey);
   }
 
@@ -169,6 +190,7 @@
     height: 64px;
     margin: 0 auto;
     background-size: contain;
+    background-repeat: no-repeat;
   }
 
   .course-cell .el-button {
@@ -176,10 +198,12 @@
     font-size: var(--size-small);
   }
 
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 600px) {
     .lp__top {
-      margin-bottom: 30px;
+      margin: 0 0 30px;
+      flex-direction: column;
     }
+
     .lp__title {
       margin-top: 20px;
       font-size: 1.5em;
@@ -187,6 +211,22 @@
 
     .lp__features {
       flex-direction: column;
+    }
+
+    .lp__feature {
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 30px;
+      width: auto;
+      display: flex;
+    }
+
+    .lp__feature p, .lp__feature-name {
+      text-align: left;
+    }
+
+    .lp__icon {
+      margin: 20px 20px 0 0;
     }
   }
 </style>

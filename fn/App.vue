@@ -125,7 +125,8 @@
   .menu__item {
     height: 40px;
     line-height: 40px;
-    padding: 0 10px;
+    margin: 0 12px;
+    padding: 0 2px;
     box-sizing: border-box;
     display: block;
     color: var(--color-black);
@@ -138,7 +139,6 @@
   .logo {
     width: 32px;
     height: 32px;
-    margin-left: 12px;
     background-image: url('./assets/logo.png');
     background-size: contain;
   }
