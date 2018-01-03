@@ -1,6 +1,6 @@
 # morio
 
-web service for memory ( under development )
+web service for memory -> [morio.cc](https://morio.cc/)
 
 ## Built With
 
