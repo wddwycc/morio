@@ -1,3 +1,5 @@
+<% var vars = htmlWebpackPlugin.options.vars %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +13,23 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <title>Morio - web service for memory</title>
+    <title><%= vars.title %></title>
     <meta name="description" content="web service for memory">
+
+    <meta property="og:title" content="<%= vars.title %>">
+    <meta property="og:description" content="<%= vars.desc %>">
+    <meta property="og:site_name" content="<%= vars.title %>">
+    <meta property="og:locale" content="ja-JP">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="<%= vars.image %>">
+    <meta property="og:image:width" content="256">
+    <meta property="og:image:height" content="256">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Morio" />
+    <meta name="twitter:description" content="<%= vars.desc %>" />
+    <meta name="twitter:site" content="@morio_cc" />
+    <meta name="twitter:image" content="<%= vars.image %>"/>
+    <meta name="twitter:domain" content="morio.cc"/>
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">

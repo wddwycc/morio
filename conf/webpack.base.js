@@ -40,15 +40,8 @@ module.exports = {
         })
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
-        loader: 'file-loader',
-        query: {
-          name: '[name].[ext]?[hash]'
-        }
+        test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+        loader: 'url-loader?limit=1024',
       },
     ]
   },
@@ -57,7 +50,12 @@ module.exports = {
       filename: '[name].[contenthash].css', disable: false, allChunks: true
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../fn/index.ejs')
+      template: path.resolve(__dirname, '../fn/index.ejs'),
+      vars: {
+        title: 'Morio',
+        desc: 'web service for memory',
+        image: 'https://morio.cc/logo_512.png',
+      },
     }),
   ],
 }
