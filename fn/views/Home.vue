@@ -30,7 +30,7 @@
           <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/globe.png')})` }"></div>
           <div>
             <h2 class="lp__feature-name">Community</h2>
-            <p>Share your knowledge base and search your interested repository here</p>
+            <p>Share your knowledge base and search interesting repository here</p>
           </div>
         </li>
       </ul>
