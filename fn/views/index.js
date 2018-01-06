@@ -1,6 +1,7 @@
 import Home from './Home.vue'
 import Login from './Login.vue'
 import Register from './Register.vue'
+import Confirm from './Confirm.vue'
 import Repo from './Repo/index.vue'
 import RepoCards from './Repo/Cards.vue'
 import RepoSetting from './Repo/Setting.vue'
@@ -25,6 +26,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register,
+  },
+  {
+    path: '/confirm',
+    name: 'Confirm',
+    component: Confirm,
   },
   // core
   {

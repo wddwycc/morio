@@ -40,6 +40,9 @@ export default {
   login: (data) => {
     return client.post('/user/login', {...data})
   },
+  confirm: (token) => {
+    return client.post('/user/confirm', {token: token})
+  },
   // query
   getUser: (username) => {
     return client.get(`/users/${username}`)

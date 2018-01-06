@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import jwt
 from flask import current_app
 from sqlalchemy import Column, DateTime
-from sqlalchemy import Integer, SmallInteger, String
+from sqlalchemy import Integer, SmallInteger, String, Boolean
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -20,6 +20,7 @@ class User(db.Model):
     nickname = Column(String(30), nullable=False, index=True)
     email = Column(String(200), nullable=False, unique=True)
     avatar = Column(String(200))
+    email_confirmed = Column(Boolean, default=False, nullable=False)
 
     _password = Column('password', String(100), nullable=False)
 
@@ -81,4 +82,28 @@ class User(db.Model):
         except Exception as e:
             raise e
 
-    # TODO: mail related token
+    # MARK: Mail Verification
+    def gen_email_token(self):
+        secret_key = current_app.config.get('SECRET_KEY')
+        payload = {
+            'exp': datetime.utcnow() + timedelta(days=7),
+            'sub': self.email,
+        }
+        token = jwt.encode(payload, key=secret_key, algorithm='HS256') \
+            .decode('utf-8')
+        return token
+
+    @staticmethod
+    def verify_email_token(email_token):
+        secret_key = current_app.config.get('SECRET_KEY')
+        try:
+            payload = jwt.decode(
+                email_token, key=secret_key, algorithms='HS256')
+            exp = payload['exp']
+            if datetime.utcfromtimestamp(exp) < datetime.now():
+                return False
+            user = User.query.filter_by(email=payload['sub']).first()
+            return user
+        except Exception as e:
+            print(e)
+            return False

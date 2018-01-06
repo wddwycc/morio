@@ -2,17 +2,18 @@ import os
 from uuid import uuid4
 
 import pagan
-from flask import Blueprint
+from flask import Blueprint, render_template
 from flask import current_app
 from flask import request, jsonify, g
 from voluptuous import Email, Match, Length
 from voluptuous import Required, Optional, All, Url
 
 from morio.core.auth import login_required
-from morio.core.error import ConflictException, SignatureError
+from morio.core.error import ConflictException, SignatureError, NotFoundError
 from morio.model import User
 from morio.model import db
 from morio.routes.utils import verify_payload, if_email
+from morio.services import mailgun
 
 bp = Blueprint('user', __name__)
 
@@ -53,9 +54,15 @@ def register():
         avatar=avatar_path,
     )
     user.password = payload['password']
-    # todo: send confirm email
     with db.auto_commit():
         db.session.add(user)
+    confirm_url = 'https://morio.cc/confirm?token={}'.format(
+        user.gen_email_token())
+    _ = mailgun.send_mail(
+        user.email,
+        'Thank you for using Morio',
+        html=render_template('email/confirm.html', url=confirm_url),
+    )
     resp = jsonify(user)
     resp.headers['Authorization'] = user.gen_auth_token()
     return resp
@@ -79,6 +86,21 @@ def login():
     resp = jsonify(user)
     resp.headers['Authorization'] = user.gen_auth_token()
     return resp
+
+
+@bp.route('/confirm', methods=['POST'])
+def confirm_email():
+    schema = {
+        Required('token'): str,
+    }
+    payload = verify_payload(request.get_json(), schema)
+    user = User.verify_email_token(payload['token'])
+    if not user:
+        raise NotFoundError(description='Token invalid')
+    with db.auto_commit():
+        user.email_confirmed = True
+        db.session.add(user)
+    return jsonify(user)
 
 
 @bp.route('/me')

@@ -2,7 +2,7 @@ import requests
 from flask import current_app
 
 
-def send_mail(to, subject, text, html=None):
+def send_mail(to, subject, text=None, html=None):
     config = current_app.config
     domain = config.get('MAILGUN_DOMAIN')
     key = config.get('MAILGUN_API_KEY')
