@@ -58,7 +58,7 @@ def register():
         db.session.add(user)
     confirm_url = 'https://morio.cc/confirm?token={}'.format(
         user.gen_email_token())
-    _ = mailgun.send_mail(
+    mailgun.send_mail(
         user.email,
         'Thank you for using Morio',
         html=render_template('email/confirm.html', url=confirm_url),

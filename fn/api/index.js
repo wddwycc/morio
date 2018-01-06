@@ -4,7 +4,7 @@ import {Message} from 'element-ui'
 
 let client = axios.create({
   baseURL: '/api',
-  timeout: 1000,
+  timeout: 10000,
 });
 
 client.interceptors.request.use(request => {
@@ -22,9 +22,13 @@ client.interceptors.response.use(response => {
   }
   return response
 }, error => {
-  let msg = error.response.data.msg || error.response.statusText
-  if (error.response.status === 401) {} else {
-    Message.error(msg)
+  if (!error.response) {
+    Message.error(error.message)
+  } else {
+    let msg = error.response.data.msg || error.response.statusText
+    if (error.response.status === 401) {} else {
+      Message.error(msg)
+    }
   }
   return Promise.reject(error)
 });
