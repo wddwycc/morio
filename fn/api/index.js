@@ -26,7 +26,11 @@ client.interceptors.response.use(response => {
     Message.error(error.message)
   } else {
     let msg = error.response.data.msg || error.response.statusText
-    if (error.response.status === 401) {} else {
+    if (error.response.status === 401) {
+
+    } else if (error.response.status  === 403) {
+      db.del('authToken')
+    } else {
       Message.error(msg)
     }
   }
