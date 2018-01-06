@@ -60,7 +60,7 @@ def register():
         user.gen_email_token())
     mailgun.send_mail(
         user.email,
-        'Thank you for using Morio',
+        'Welcome to Morio',
         html=render_template('email/confirm.html', url=confirm_url),
     )
     resp = jsonify(user)
