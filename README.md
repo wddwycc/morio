@@ -40,6 +40,10 @@ UPLOAD_FOLDER = os.path.join(_here, 'upload')
 SQLALCHEMY_DATABASE_URI = (
     'postgresql://morio:pw@localhost:5432/morio'
 )
+
+MAILGUN_DOMAIN = ''
+MAILGUN_API_KEY = ''
+MAILGUN_ADDRESS = ''
 ```
 
 ## run dev server

@@ -21,6 +21,7 @@ pyjwt = "*"
 gunicorn = "*"
 voluptuous = "*"
 pagan = "*"
+requests = "*"
 
 
 [requires]
