@@ -1,0 +1,11 @@
+[Unit]
+Description=worker for morio
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/code/morio
+ExecStart=/usr/local/bin/pipenv celery worker -A celery_worker.celery --loglevel=info
+
+[Install]
+WantedBy=multi-user.target

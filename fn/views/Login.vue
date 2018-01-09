@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Login</h1>
-    <el-form ref="form" :rules="rules" :model="form" label-width="80px" label-position="right" class="register" @keyup.enter.native="onSubmit()">
+    <el-form ref="form" :rules="rules" :model="form" label-width="80px" label-position="right" class="register">
       <el-form-item label="User" prop="user" required>
         <el-input v-model="form.user"></el-input>
       </el-form-item>

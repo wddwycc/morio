@@ -5,6 +5,7 @@ from flask.json import JSONEncoder as _JSONEncoder
 
 from . import model
 from . import routes
+from .task import celery
 
 
 class JSONEncoder(_JSONEncoder):
@@ -21,13 +22,14 @@ class Flask(_Flask):
 def create_app():
     app = Flask(__name__)
 
-    dev_config = os.path.join(app.root_path, '../conf/base_settings.py')
-    app.config.from_pyfile(dev_config)
+    base_settings = os.path.join(app.root_path, '../conf/base_settings.py')
+    app.config.from_pyfile(base_settings)
 
     local_settings = os.path.join(app.root_path, '../local_settings.py')
     app.config.from_pyfile(local_settings)
 
     routes.init_app(app)
     model.init_app(app)
+    celery.conf.update(app.config)
 
     return app

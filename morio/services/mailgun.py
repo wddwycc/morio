@@ -1,7 +1,9 @@
 import requests
 from flask import current_app
+from morio.task import celery
 
 
+@celery.task(ignore_result=True)
 def send_mail(to, subject, text=None, html=None):
     config = current_app.config
     domain = config.get('MAILGUN_DOMAIN')

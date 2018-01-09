@@ -11,3 +11,8 @@ services:
       - DB_NAME=morio
     ports:
       - 5432:5432
+
+  redis:
+    image: redis:4.0.2
+    ports:
+      - 6379:6379

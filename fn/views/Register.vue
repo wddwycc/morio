@@ -2,7 +2,7 @@
   <div>
     <h1>Register</h1>
 
-    <el-form ref="form" :rules="rules" :model="form" label-width="80px" label-position="right" class="register" @keyup.enter.native="onSubmit()">
+    <el-form ref="form" :rules="rules" :model="form" label-width="80px" label-position="right" class="register">
       <el-form-item label="Id" prop="name" required>
         <el-input v-model="form.name"></el-input>
       </el-form-item>

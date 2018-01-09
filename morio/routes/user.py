@@ -56,13 +56,15 @@ def register():
     user.password = payload['password']
     with db.auto_commit():
         db.session.add(user)
+
     confirm_url = 'https://morio.cc/confirm?token={}'.format(
         user.gen_email_token())
-    mailgun.send_mail(
+    mailgun.send_mail.delay(
         user.email,
         'Welcome to Morio',
         html=render_template('email/confirm.html', url=confirm_url),
     )
+
     resp = jsonify(user)
     resp.headers['Authorization'] = user.gen_auth_token()
     return resp

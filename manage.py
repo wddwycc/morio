@@ -2,9 +2,10 @@ import click
 from flask.cli import FlaskGroup
 from flask_alembic import Alembic
 
+from morio import create_app
+
 
 def _create_flask_app(_):
-    from morio import create_app
     app = create_app()
     Alembic(app)
     return app

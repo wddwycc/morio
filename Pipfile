@@ -22,6 +22,8 @@ gunicorn = "*"
 voluptuous = "*"
 pagan = "*"
 requests = "*"
+celery = "*"
+redis = "*"
 
 
 [requires]
