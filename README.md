@@ -25,6 +25,8 @@ web service for memory -> [morio.cc](https://morio.cc/)
 ```
 $ npm install
 $ pipenv install
+$ docker-compose up
+$ python manage.py db upgrade
 ```
 
 Create `local_settings.py`, fill it with
@@ -41,6 +43,9 @@ SQLALCHEMY_DATABASE_URI = (
     'postgresql://morio:pw@localhost:5432/morio'
 )
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
 MAILGUN_DOMAIN = ''
 MAILGUN_API_KEY = ''
 MAILGUN_ADDRESS = ''
@@ -50,7 +55,7 @@ MAILGUN_ADDRESS = ''
 
 ```
 $ docker-compose up
-$ python manage.py db upgrade
 $ npm run dev
 $ python manage.py run
+$ celery worker -A celery_worker.celery --loglevel=info
 ```

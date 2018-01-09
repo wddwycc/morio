@@ -11,6 +11,7 @@ def update_flask():
         run('pipenv install')
         run('pipenv run python manage.py db upgrade')
         run('sudo systemctl restart morio.service')
+        run('sudo systemctl restart morio-worker.service')
 
 
 def update_fn():
