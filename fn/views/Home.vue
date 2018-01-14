@@ -23,7 +23,7 @@
           <div class="lp__icon" :style="{backgroundImage : `url(${require('../assets/flask.png')})` }"></div>
           <div>
             <h2 class="lp__feature-name">Efficiency</h2>
-            <p>Memorize everything through proper methodology like forgetting curve</p>
+            <p>Memorize everything through forgetting curve</p>
           </div>
         </li>
         <li class="lp__feature">
