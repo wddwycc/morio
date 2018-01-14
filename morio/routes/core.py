@@ -1,19 +1,16 @@
-from sqlalchemy import desc
 from flask import Blueprint
 from flask import g
 from flask import jsonify, request
-
-from voluptuous import Required, Any, All
+from sqlalchemy import desc
 from voluptuous import Coerce, Match, Length
+from voluptuous import Required, Any, All
 
-from morio.core.error import ConflictException, NotFoundError, SignatureError
 from morio.core.auth import login_required, login_optional
+from morio.core.error import ConflictException, NotFoundError, SignatureError
 from morio.core.pagination import with_pagination
-from morio.model import db, CourseCardProgress
 from morio.model import Repository, Card, User, Course
-
+from morio.model import db, CourseCardProgress
 from .utils import verify_payload, retrieve_user_repo, retrieve_course
-
 
 bp = Blueprint('core', __name__)
 
@@ -131,6 +128,13 @@ def create_repo_card():
     card = Card(**payload)
     with db.auto_commit():
         db.session.add(card)
+    courses = Course.query \
+        .filter_by(repository_id=payload['repository_id']) \
+        .all()
+    with db.auto_commit():
+        for course in courses:
+            progress = CourseCardProgress(course_id=course.id, card_id=card.id)
+            db.session.add(progress)
     return jsonify(card)
 
 
@@ -143,6 +147,7 @@ def delete_repo_card(card_id):
     if card.repository.user_id != g.user.id:
         raise SignatureError(description='Permission denied')
     with db.auto_commit():
+        CourseCardProgress.query.filter_by(card_id=card.id).delete()
         db.session.delete(card)
     return jsonify({})
 
