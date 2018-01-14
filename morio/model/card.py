@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, Text, DateTime
+from sqlalchemy import Integer, String, Text, DateTime
 
 from morio.model import db
 

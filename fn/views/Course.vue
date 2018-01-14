@@ -6,8 +6,14 @@
     <div v-else>
       <div v-if="card && card.repo">
         <el-card class="box-card">
-          <div class="course__question">{{card.repo['side_a_name'] || 'Side A' }} : {{ card.side_a }}</div>
-          <div v-if="showAnswer" class="course__answer">{{card.repo['side_b_name'] || 'Side B' }}: {{ card.side_b }}</div>
+          <div>
+            <p class="card__key">{{ card.repo['side_a_name'] || 'Side A' }}:</p>
+            <p class="card__value">{{ card['side_a'] }}</p>
+          </div>
+          <div v-if="showAnswer">
+            <p class="card__key">{{ card.repo['side_b_name'] || 'Side B' }}:</p>
+            <p class="card__value">{{ card['side_b'] }}</p>
+          </div>
         </el-card>
 
         <el-button class="course__show-answer" @click="showAnswer = !showAnswer">

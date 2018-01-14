@@ -10,7 +10,7 @@ import App from './App.vue'
 import {
   Button, Card, Col, Dropdown, DropdownItem, DropdownMenu, Form,
   FormItem, Input, Menu, MenuItem, Row, Switch, TabPane, Tabs,
-  Dialog, MessageBox
+  Dialog, MessageBox, Pagination
 } from 'element-ui'
 import routerConfig from './views/index'
 import store from './store/index';
@@ -36,6 +36,7 @@ Vue.use(DropdownItem)
 Vue.use(TabPane)
 Vue.use(Tabs)
 Vue.use(Dialog)
+Vue.use(Pagination)
 
 const MsgBox = MessageBox;
 Vue.prototype.$confirm = MsgBox.confirm

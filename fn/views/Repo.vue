@@ -36,18 +36,57 @@
         </div>
       </transition>
 
-      <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-        <el-tab-pane label="Cards" name="cards"></el-tab-pane>
-        <el-tab-pane v-if="isOwner" label="Setting" name="setting"></el-tab-pane>
-      </el-tabs>
+      <el-tabs v-model="activeTab">
+        <el-tab-pane label="Cards" name="cards">
+          <div v-if="cards.length > 0">
+            <el-card v-for="card in cards" :key="card.id" class="card">
+              <div>
+                <p class="card__key">{{ repo['side_a_name'] || 'Side A' }}:</p>
+                <p class="card__value">{{ card['side_a'] }}</p>
+              </div>
+              <div>
+                <p class="card__key">{{ repo['side_b_name'] || 'Side B' }}:</p>
+                <p class="card__value">{{ card['side_b'] }}</p>
+              </div>
+              <el-button v-if="isOwner" class="card__del" icon="el-icon-delete" size="mini" type="text" @click="delCard(card.id)"></el-button>
+            </el-card>
 
-      <router-view :cards="this.cards" :repo="this.repo" :isOwner="this.isOwner"></router-view>
+            <el-pagination
+              layout="prev, pager, next"
+              :total="50">
+            </el-pagination>
+          </div>
+          <empty text="No card" v-else></empty>
+        </el-tab-pane>
+        <el-tab-pane v-if="isOwner" label="Setting" name="setting">
+          <el-form ref="settingForm" :model="settingForm" label-width="80px" label-position="right" class="register">
+            <el-form-item label="Private">
+              <el-switch v-model="settingForm.private"></el-switch>
+            </el-form-item>
+            <el-form-item label="Description" prop="desc">
+              <el-input type="textarea" v-model="settingForm.desc"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Side A" prop="side_a_name">
+              <el-input v-model="settingForm.side_a_name"></el-input>
+            </el-form-item>
+            <el-form-item label="Side B" prop="side_b_name">
+              <el-input v-model="settingForm.side_b_name"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmitSetting()">Save</el-button>
+            </el-form-item>
+          </el-form>
+
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
 
 <script>
-  import api from '../../api/index'
+  import Vue from 'vue'
+  import api from '../api/index'
   import {Message} from 'element-ui'
 
   export default {
@@ -58,8 +97,12 @@
           side_a: '',
           side_b: '',
         },
+        settingForm: {
+          desc: '',
+          side_a_name: '',
+          side_b_name: '',
+        },
         loading: true,
-        // cards, setting
         activeTab: 'cards',
         repo: {},
         cards: [],
@@ -85,19 +128,10 @@
           })
         })
       },
-      handleTabClick: function () {
-        if (this.activeTab === 'cards') {
-          this.$router.push(`/user/${this.repo.username}/${this.repo.name}`)
-        } else {
-          this.$router.push(`/user/${this.repo.username}/${this.repo.name}/setting`)
-        }
-      },
-      reloadRepo: function () {
-        api.getRepo(
-          this.$route.params['username'],
-          this.$route.params['repo_name'],
-        ).then(resp => {
-          this.repo = resp.data
+      delCard(id) {
+        api.delCard(id).then(() => {
+          Message.success('Deleted')
+          this.reloadCards()
         })
       },
       reloadCards: function () {
@@ -114,18 +148,20 @@
           this.$router.push('/')
         })
       },
+      onSubmitSetting: function () {
+        api.updateRepo(this.repo.username, this.repo.name, this.settingForm).then(resp => {
+          Message.success('Updated')
+          this.repo = resp.data
+        })
+      },
     },
     mounted: function () {
-      if (this.$route.name === 'Repo') {
-        this.activeTab = 'cards'
-      } else {
-        this.activeTab = 'setting'
-      }
       api.getRepo(
         this.$route.params['username'],
         this.$route.params['repo_name'],
       ).then(resp => {
         this.repo = resp.data
+        this.settingForm = Vue.util.extend({}, this.repo)
         api.getCards(
           this.repo.username, this.repo.name
         ).then(resp => {
@@ -155,5 +191,27 @@
   .repo-editor__submit {
     margin-top: 10px;
   }
+
+  .card {
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .card__key {
+    color: var(--color-light-grey);
+  }
+
+  .card__value {
+    margin: 10px 0;
+    word-wrap: break-word;
+    color: var(--color-black);
+  }
+
+  .card__del {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
 </style>
 

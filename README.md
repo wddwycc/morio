@@ -12,7 +12,9 @@ web service for memory -> [morio.cc](https://morio.cc/)
 ### back-end
 
 * flask
+* celery
 * postgresql
+* redis
 * influxdb
 
 ### others
