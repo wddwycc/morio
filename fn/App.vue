@@ -137,10 +137,21 @@
   }
 
   .logo {
+    position: relative;
     width: 32px;
     height: 32px;
     background-image: url('./assets/logo.png');
     background-size: contain;
+  }
+
+  .logo::after {
+    position: absolute;
+    content: 'beta';
+    top: -12px;
+    right: -8px;
+    /*font-weight: bold;*/
+    font-size: 8px;
+    color: var(--color-light-grey);
   }
 
   .menu__item:hover {
