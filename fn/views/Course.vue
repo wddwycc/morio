@@ -4,14 +4,15 @@
       <p>loading...</p>
     </div>
     <div v-else>
-      <div v-if="card && card.repo">
+      <div v-if="card && repo">
+        <h1>{{ summary }}</h1>
         <el-card class="box-card">
           <div>
-            <p class="card__key">{{ card.repo['side_a_name'] || 'Side A' }}:</p>
+            <p class="card__key">{{ repo['side_a_name'] || 'Side A' }}:</p>
             <p class="card__value">{{ card['side_a'] }}</p>
           </div>
           <div v-if="showAnswer">
-            <p class="card__key">{{ card.repo['side_b_name'] || 'Side B' }}:</p>
+            <p class="card__key">{{ repo['side_b_name'] || 'Side B' }}:</p>
             <p class="card__value">{{ card['side_b'] }}</p>
           </div>
         </el-card>
@@ -29,7 +30,7 @@
         </div>
       </div>
       <div v-else>
-        <h1>You have completed this course!</h1>
+        <h1>🎉 You have no card to learn today</h1>
       </div>
     </div>
   </div>
@@ -42,8 +43,10 @@
     data() {
       return {
         card: null,
+        repo: null,
         showAnswer: false,
         loading: true,
+        summary: '',
       }
     },
     computed: {
@@ -56,11 +59,19 @@
         this.loading = true
         let payload = {}
         if ((last_choice || last_choice === 0) && this.card) {
-          payload = {card_id: this.card.id, type: last_choice}
+          payload = {card_id: this.card.id, feel: last_choice}
         }
         api.courseNextCard(this.id, payload).then(resp => {
           this.showAnswer = false
-          this.card = resp.data
+          if (resp.data.data) {
+            this.card = resp.data.data.card
+            this.repo = resp.data.data.repo
+            this.summary = `Today: ${resp.data.summary.to_learn} cards to learn, ${resp.data.summary.to_review} cards to review`
+          } else {
+            this.card = null
+            this.repo = null
+            this.summary = ''
+          }
           this.loading = false
         })
       },

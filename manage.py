@@ -21,5 +21,13 @@ def create_admin():
     pass
 
 
+@cli.command(help='Refresh all course progress')
+def refresh_progress():
+    from morio.model import Course
+    courses = Course.query.all()
+    for course in courses:
+        course.refresh_progress()
+
+
 if __name__ == '__main__':
     cli()

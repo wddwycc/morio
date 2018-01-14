@@ -1,6 +1,4 @@
 from sqlalchemy import desc
-from sqlalchemy.sql.expression import func as db_func
-
 from flask import Blueprint
 from flask import g
 from flask import jsonify, request
@@ -11,7 +9,7 @@ from voluptuous import Coerce, Match, Length
 from morio.core.error import ConflictException, NotFoundError, SignatureError
 from morio.core.auth import login_required, login_optional
 from morio.core.pagination import with_pagination
-from morio.model import db, CourseAction
+from morio.model import db, CourseCardProgress
 from morio.model import Repository, Card, User, Course
 
 from .utils import verify_payload, retrieve_user_repo, retrieve_course
@@ -177,8 +175,15 @@ def create_course():
         if g.user.id != repo.user_id:
             raise NotFoundError
     course = Course(**payload, user_id=g.user.id)
+    # todo: 做成transaction
     with db.auto_commit():
         db.session.add(course)
+    cards = Card.query.filter_by(repository_id=repo.id).all()
+    with db.auto_commit():
+        for card in cards:
+            progress = CourseCardProgress(course_id=course.id, card_id=card.id)
+            db.session.add(progress)
+    course.refresh_progress()
     return jsonify(course)
 
 
@@ -187,7 +192,7 @@ def create_course():
 def update_course(course_id):
     course = retrieve_course(course_id)
     with db.auto_commit():
-        CourseAction.query.filter_by(course_id=course_id).delete()
+        CourseCardProgress.query.filter_by(course_id=course_id).delete()
         db.session.delete(course)
     return jsonify({})
 
@@ -196,20 +201,13 @@ def update_course(course_id):
 @login_required
 def course_next_card(course_id):
     course = retrieve_course(course_id)
-    easy_ids = CourseAction.query.with_entities(CourseAction.card_id)\
-        .filter_by(course_id=course_id, type=CourseAction.EASY)
-    src = Card.query.filter_by(repository_id=course.repository_id) \
-        .filter(~Card.id.in_(easy_ids)).order_by(db_func.random()).first()
-    if not src:
-        return jsonify({})
     payload = request.get_json()
     if payload:
         schema = {
             Required('card_id'): int,
-            Required('type'): Any(*CourseAction.types),
+            Required('feel'): Any(*CourseCardProgress.feels),
         }
-        payload = verify_payload(payload, schema)
-        action = CourseAction(**payload, course_id=course_id)
-        with db.auto_commit():
-            db.session.add(action)
-    return jsonify({**src.to_dict(), 'repo': src.repository})
+        payload = verify_payload(request.get_json(), schema)
+        CourseCardProgress.record(
+            course.id, payload['card_id'], payload['feel'])
+    return jsonify(course.next() or {})

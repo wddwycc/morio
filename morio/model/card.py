@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, String, Text, DateTime
+from sqlalchemy.orm import relationship
 
 from morio.model import db
 
@@ -18,6 +19,9 @@ class Card(db.Model):
         DateTime, default=datetime.now, onupdate=datetime.now,
         nullable=False
     )
+
+    progresses = relationship('CourseCardProgress',
+                              backref='card', lazy='dynamic')
 
     def to_dict(self):
         return dict(
