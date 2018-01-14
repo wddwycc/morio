@@ -192,6 +192,7 @@
   .lp__icon {
     width: 64px;
     height: 64px;
+    flex-shrink: 0;
     margin: 0 auto;
     background-size: contain;
     background-repeat: no-repeat;
@@ -230,6 +231,7 @@
     }
 
     .lp__feature-name {
+      margin-top: 10px;
       margin-bottom: 0;
     }
 
