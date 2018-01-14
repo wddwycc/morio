@@ -158,15 +158,20 @@ def get_courses():
 
 
 @bp.route('/courses', methods=['POST'])
-@login_required
+@login_optional
 def create_course():
     schema = {
         Required('repository_id'): int,
     }
     payload = verify_payload(request.get_json(), schema)
     repo = Repository.query.get(payload['repository_id'])
-    if not repo or repo.private:
+    if not repo:
         raise NotFoundError
+    if repo.private:
+        if not g.user:
+            raise NotFoundError
+        if g.user.id != repo.user_id:
+            raise NotFoundError
     course = Course(**payload, user_id=g.user.id)
     with db.auto_commit():
         db.session.add(course)
