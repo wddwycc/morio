@@ -120,7 +120,11 @@
   }
 </script>
 
-<style>
+<style scoped>
+  h2 {
+    margin-bottom: 10px;
+  }
+
   .lp__top {
     max-width: 880px;
     margin: 100px auto 100px;

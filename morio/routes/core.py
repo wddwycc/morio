@@ -72,10 +72,14 @@ def update_repo(username, repo_name):
 @with_pagination
 def repo_cards(username, repo_name):
     _, repo = retrieve_user_repo(username, repo_name)
+    total = Card.query.filter_by(repository_id=repo.id).count()
     cards = Card.query.filter_by(repository_id=repo.id) \
         .order_by(desc(Card.updated_at)) \
         .limit(g.limit).offset(g.offset).all()
-    return jsonify(cards)
+    return jsonify(dict(
+        total=total,
+        data=cards,
+    ))
 
 
 @bp.route('/repos')

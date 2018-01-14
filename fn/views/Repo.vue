@@ -52,8 +52,10 @@
             </el-card>
 
             <el-pagination
+              class="pagination"
               layout="prev, pager, next"
-              :total="50">
+              :total=this.total :page-size="limit" :current-page="currentPage"
+              @current-change="onPageChange">
             </el-pagination>
           </div>
           <empty text="No card" v-else></empty>
@@ -106,11 +108,17 @@
         activeTab: 'cards',
         repo: {},
         cards: [],
+        limit: 30,
+        currentPage: 1,
+        total: 0,
       }
     },
     computed: {
       isOwner: function () {
         return this.$store.state.user.name === this.repo.username
+      },
+      offset: function () {
+        return this.limit * (this.currentPage - 1)
       },
     },
     methods: {
@@ -121,11 +129,7 @@
           this.editorForm.side_a = ''
           this.editorForm.side_b = ''
           Message.success('Created card')
-          api.getCards(
-            this.repo.username, this.repo.name
-          ).then(resp => {
-            this.cards = resp.data
-          })
+          this.reloadCards()
         })
       },
       delCard(id) {
@@ -136,10 +140,22 @@
       },
       reloadCards: function () {
         api.getCards(
-          this.repo.username, this.repo.name
+          this.repo.username, this.repo.name,
+          {limit: this.limit, offset: this.offset}
         ).then(resp => {
-          this.cards = resp.data
+          this.total = resp.data.total
+          this.cards = resp.data.data
           this.loading = false
+        })
+      },
+      onPageChange: function (target) {
+        api.getCards(
+          this.repo.username, this.repo.name,
+          {limit: this.limit, offset: (target - 1) * this.limit}
+        ).then(resp => {
+          this.total = resp.data.total
+          this.cards = resp.data.data
+          this.currentPage = target
         })
       },
       newCourse: function () {
@@ -162,12 +178,7 @@
       ).then(resp => {
         this.repo = resp.data
         this.settingForm = Vue.util.extend({}, this.repo)
-        api.getCards(
-          this.repo.username, this.repo.name
-        ).then(resp => {
-          this.cards = resp.data
-          this.loading = false
-        })
+        this.reloadCards()
       })
     }
   }
@@ -211,6 +222,10 @@
     position: absolute;
     top: 16px;
     right: 16px;
+  }
+
+  .pagination {
+    margin: 0 auto;
   }
 
 </style>

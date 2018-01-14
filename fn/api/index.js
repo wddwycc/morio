@@ -65,8 +65,8 @@ export default {
   updateRepo: (username, repoName, data) => {
     return client.put(`/users/${username}/repos/${repoName}`, data)
   },
-  getCards: (username, repoName) => {
-    return client.get(`/users/${username}/repos/${repoName}/cards`)
+  getCards: (username, repoName, params) => {
+    return client.get(`/users/${username}/repos/${repoName}/cards`, {params: params})
   },
   // personal query
   myRepos: () => {
