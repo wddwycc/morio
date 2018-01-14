@@ -149,7 +149,7 @@
     content: 'beta';
     top: -12px;
     right: -8px;
-    /*font-weight: bold;*/
+    font-weight: bold;
     font-size: 8px;
     color: var(--color-light-grey);
   }
