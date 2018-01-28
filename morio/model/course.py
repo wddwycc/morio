@@ -4,7 +4,7 @@ import math
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, DateTime
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.expression import func, or_, and_
+from sqlalchemy.sql.expression import func
 
 from morio.model import db
 
@@ -87,7 +87,8 @@ class Course(db.Model):
                 row.now_status = None
         # map hard feeling to last_time_grasped = None, hits = 0
         last_feeling_hard = CourseCardProgress.query \
-            .filter_by(course_id=self.id, last_feel=CourseCardProgress.FEEL_HARD) \
+            .filter_by(course_id=self.id,
+                       last_feel=CourseCardProgress.FEEL_HARD) \
             .all()
         with db.auto_commit():
             for item in last_feeling_hard:

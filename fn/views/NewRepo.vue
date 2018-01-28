@@ -12,6 +12,15 @@
       <el-form-item label="Private" required>
         <el-switch v-model="form.private"></el-switch>
       </el-form-item>
+
+      <el-form-item label="Sides" required>
+        <el-input-number v-model="form.sides" controls-position="right" :min="2" :max="6"></el-input-number>
+      </el-form-item>
+
+      <el-form-item v-for="i in ['a', 'b', 'c', 'd', 'e', 'f'].slice(0, form.sides)" :key="i" :label="`Side ${i.toUpperCase()}`" :prop="`side_${i}_name`">
+        <el-input v-model="form[`side_${i}_name`]"></el-input>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="onSubmit()">Create</el-button>
       </el-form-item>
@@ -28,7 +37,14 @@
         form: {
           name: '',
           desc: '',
-          private: '',
+          sides: 2,
+          private: false,
+          side_a_name: null,
+          side_b_name: null,
+          side_c_name: null,
+          side_d_name: null,
+          side_e_name: null,
+          side_f_name: null,
         },
         rules: {},
       }

@@ -13,24 +13,17 @@
       </div>
 
       <transition name="fade">
-        <div class="repo-editor" v-if="editing">
+        <div class="repo-editor" v-show="editing">
           <el-row class="demo-autocomplete">
-            <el-col :span="11">
-              <el-input
-                type="textarea"
-                :rows="2"
-                :placeholder="repo['side_a_name'] || 'Side A'"
-                v-model="editorForm.side_a">
-              </el-input>
-            </el-col>
-            <el-col :span="11" :offset="2">
-              <el-input
-                type="textarea"
-                :rows="2"
-                :placeholder="repo['side_b_name'] || 'Side B'"
-                v-model="editorForm.side_b">
-              </el-input>
-            </el-col>
+            <el-input
+              v-for="i in ['a', 'b', 'c', 'd', 'e', 'f'].slice(0, repo.sides)"
+              :key="i"
+              type="textarea"
+              class="editor__entity"
+              :rows="2"
+              :placeholder="repo[`side_${i}_name`] || `Side ${i.toUpperCase()}`"
+              v-model="editorForm[`side_${i}`]">
+            </el-input>
           </el-row>
           <el-button class="repo-editor__submit" size="mini" @click="newCard()">Add</el-button>
         </div>
@@ -40,13 +33,9 @@
         <el-tab-pane label="Cards" name="cards">
           <div v-if="cards.length > 0">
             <el-card v-for="card in cards" :key="card.id" class="card">
-              <div>
-                <p class="card__key">{{ repo['side_a_name'] || 'Side A' }}:</p>
-                <p class="card__value">{{ card['side_a'] }}</p>
-              </div>
-              <div>
-                <p class="card__key">{{ repo['side_b_name'] || 'Side B' }}:</p>
-                <p class="card__value">{{ card['side_b'] }}</p>
+              <div v-for="i in ['a', 'b', 'c', 'd', 'e', 'f'].slice(0, repo.sides)">
+                <p class="card__key">{{ repo[`side_${i}_name`] || `Side ${i.toUpperCase()}` }}:</p>
+                <p class="card__value">{{ card[`side_${i}`] }}</p>
               </div>
               <el-button v-if="isOwner" class="card__del" icon="el-icon-delete" size="mini" type="text" @click="delCard(card.id)"></el-button>
             </el-card>
@@ -69,12 +58,29 @@
               <el-input type="textarea" v-model="settingForm.desc"></el-input>
             </el-form-item>
 
+            <el-form-item label="Sides">
+              <el-input-number v-model="settingForm.sides" controls-position="right" :min="2" :max="6"></el-input-number>
+            </el-form-item>
+
             <el-form-item label="Side A" prop="side_a_name">
               <el-input v-model="settingForm.side_a_name"></el-input>
             </el-form-item>
             <el-form-item label="Side B" prop="side_b_name">
               <el-input v-model="settingForm.side_b_name"></el-input>
             </el-form-item>
+            <el-form-item v-if="settingForm.sides >= 3" label="Side C" prop="side_c_name">
+              <el-input v-model="settingForm.side_c_name"></el-input>
+            </el-form-item>
+            <el-form-item v-if="settingForm.sides >= 4" label="Side D" prop="side_d_name">
+              <el-input v-model="settingForm.side_d_name"></el-input>
+            </el-form-item>
+            <el-form-item v-if="settingForm.sides >= 5" label="Side E" prop="side_e_name">
+              <el-input v-model="settingForm.side_e_name"></el-input>
+            </el-form-item>
+            <el-form-item v-if="settingForm.sides >= 6" label="Side F" prop="side_f_name">
+              <el-input v-model="settingForm.side_f_name"></el-input>
+            </el-form-item>
+
             <el-form-item>
               <el-button type="primary" @click="onSubmitSetting()">Save</el-button>
             </el-form-item>
@@ -98,11 +104,21 @@
         editorForm: {
           side_a: '',
           side_b: '',
+          side_c: '',
+          side_d: '',
+          side_e: '',
+          side_f: '',
         },
         settingForm: {
           desc: '',
-          side_a_name: '',
-          side_b_name: '',
+          private: false,
+          sides: 2,
+          side_a_name: null,
+          side_b_name: null,
+          side_c_name: null,
+          side_d_name: null,
+          side_e_name: null,
+          side_f_name: null,
         },
         loading: true,
         activeTab: 'cards',
@@ -126,8 +142,9 @@
         api.newCard(
           {repository_id: this.repo.id, ...this.editorForm}
         ).then(() => {
-          this.editorForm.side_a = ''
-          this.editorForm.side_b = ''
+          for (let i of ['a', 'b', 'c', 'd', 'e', 'f']) {
+            this.editorForm[`side_${i}`] = ''
+          }
           Message.success('Created card')
           this.reloadCards()
         })
@@ -165,7 +182,7 @@
         })
       },
       onSubmitSetting: function () {
-        api.updateRepo(this.repo.username, this.repo.name, this.settingForm).then(resp => {
+        api.updateRepo(this.repo.id, this.settingForm).then(resp => {
           Message.success('Updated')
           this.repo = resp.data
         })
@@ -222,6 +239,10 @@
     position: absolute;
     top: 16px;
     right: 16px;
+  }
+
+  .editor__entity {
+    margin-bottom: 10px;
   }
 
   .pagination {

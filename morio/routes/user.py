@@ -12,7 +12,7 @@ from morio.core.auth import login_required
 from morio.core.error import ConflictException, SignatureError, NotFoundError
 from morio.model import User
 from morio.model import db
-from morio.routes.utils import verify_payload, if_email
+from morio.routes.utils import retrieve_payload, if_email
 from morio.services import mailgun
 
 bp = Blueprint('user', __name__)
@@ -33,7 +33,7 @@ def register():
             str, Length(min=6, msg='password less then 6 letters'),
         ),
     }
-    payload = verify_payload(request.get_json(), schema)
+    payload = retrieve_payload(schema)
     user = User.query.filter_by(name=payload['name']).first()
     if user:
         raise ConflictException(description='username already used')
@@ -76,7 +76,7 @@ def login():
         Required('user'): str,
         Required('password'): str,
     }
-    payload = verify_payload(request.get_json(), schema)
+    payload = retrieve_payload(schema)
     if if_email(payload['user']):
         user = User.query.filter_by(email=payload['user']).first()
     else:
@@ -95,7 +95,7 @@ def confirm_email():
     schema = {
         Required('token'): str,
     }
-    payload = verify_payload(request.get_json(), schema)
+    payload = retrieve_payload(schema)
     user = User.verify_email_token(payload['token'])
     if not user:
         raise NotFoundError(description='Token invalid')
@@ -120,7 +120,7 @@ def update_me():
         ),
         Optional('avatar'): All(Url, msg='invalid avatar url')
     }
-    payload = verify_payload(request.get_json(), schema)
+    payload = retrieve_payload(schema)
     user = g.user
     for key, value in payload.items():
         setattr(user, key, value)

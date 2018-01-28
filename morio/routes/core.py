@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import g
 from flask import jsonify, request
 from sqlalchemy import desc
-from voluptuous import Coerce, Match, Length
+from voluptuous import Coerce, Match, Length, Range
 from voluptuous import Required, Any, All
 
 from morio.core.auth import login_required, login_optional
@@ -10,7 +10,7 @@ from morio.core.error import ConflictException, NotFoundError, SignatureError
 from morio.core.pagination import with_pagination
 from morio.model import Repository, Card, User, Course
 from morio.model import db, CourseCardProgress
-from .utils import verify_payload, retrieve_user_repo, retrieve_course
+from .utils import retrieve_payload, retrieve_user_repo, retrieve_course
 
 bp = Blueprint('core', __name__)
 
@@ -42,26 +42,6 @@ def get_repo(username, repo_name):
     return jsonify(repo)
 
 
-@bp.route('/users/<username>/repos/<repo_name>', methods=['PUT'])
-@login_required
-def update_repo(username, repo_name):
-    user, repo = retrieve_user_repo(username, repo_name)
-    if user.id != g.user.id:
-        raise SignatureError
-    schema = {
-        Required('side_a_name'): Any(str, None),
-        Required('side_b_name'): Any(str, None),
-        Required('desc'): Any(str, None),
-        Required('private'): Coerce(bool),
-    }
-    payload = verify_payload(request.get_json(), schema)
-    for key, value in payload.items():
-        setattr(repo, key, value)
-    with db.auto_commit():
-        db.session.add(repo)
-    return jsonify(repo)
-
-
 @bp.route('/users/<username>/repos/<repo_name>/cards')
 @login_optional
 @with_pagination
@@ -86,6 +66,19 @@ def get_own_repos():
     return jsonify(repos)
 
 
+common_repo_schema = {
+    Required('desc'): Any(str, None),
+    Required('private'): Coerce(bool),
+    Required('sides'): Range(min=2, max=6),
+    Required('side_a_name'): Any(str, None),
+    Required('side_b_name'): Any(str, None),
+    Required('side_c_name'): Any(str, None),
+    Required('side_d_name'): Any(str, None),
+    Required('side_e_name'): Any(str, None),
+    Required('side_f_name'): Any(str, None),
+}
+
+
 @bp.route('/repos', methods=['POST'])
 @login_required
 def create_repo():
@@ -95,11 +88,11 @@ def create_repo():
                   msg='repository name has invalid symbol'),
             Length(min=1, max=30, msg='repository name too long')
         ),
-        Required('desc'): Any(str, None),
-        Required('private'): Coerce(bool),
+        **common_repo_schema,
     }
-    payload = verify_payload(request.get_json(), schema)
-    src = Repository.query.filter_by(user_id=g.user.id, name=payload['name']) \
+    payload = retrieve_payload(schema)
+    src = Repository.query \
+        .filter_by(user_id=g.user.id, name=payload['name']) \
         .first()
     if src:
         raise ConflictException(description='repo already exist')
@@ -109,17 +102,34 @@ def create_repo():
     return jsonify(repo)
 
 
-# MARK: cards
+@bp.route('/repos/<id_>', methods=['PUT'])
+@login_required
+def update_repo(id_):
+    payload = retrieve_payload(common_repo_schema)
+    src = Repository.query.filter_by(id=id_, user_id=g.user.id) \
+        .first()
+    if not src:
+        raise NotFoundError(description='Repo not found')
+    with db.auto_commit():
+        for key, value in payload.items():
+            setattr(src, key, value)
+    return jsonify(src)
 
+
+# MARK: cards
 @bp.route('/cards', methods=['POST'])
 @login_required
 def create_repo_card():
     schema = {
         Required('repository_id'): int,
-        Required('side_a'): str,
-        Required('side_b'): str,
+        Required('side_a'): Any(str, None),
+        Required('side_b'): Any(str, None),
+        Required('side_c'): Any(str, None),
+        Required('side_d'): Any(str, None),
+        Required('side_e'): Any(str, None),
+        Required('side_f'): Any(str, None),
     }
-    payload = verify_payload(request.get_json(), schema)
+    payload = retrieve_payload(schema)
     repo = Repository.query.get(payload['repository_id'])
     if not repo:
         raise NotFoundError
@@ -170,7 +180,7 @@ def create_course():
     schema = {
         Required('repository_id'): int,
     }
-    payload = verify_payload(request.get_json(), schema)
+    payload = retrieve_payload(schema)
     repo = Repository.query.get(payload['repository_id'])
     if not repo:
         raise NotFoundError
@@ -212,7 +222,7 @@ def course_next_card(course_id):
             Required('card_id'): int,
             Required('feel'): Any(*CourseCardProgress.feels),
         }
-        payload = verify_payload(request.get_json(), schema)
+        payload = retrieve_payload(schema)
         CourseCardProgress.record(
             course.id, payload['card_id'], payload['feel'])
     return jsonify(course.next() or {})

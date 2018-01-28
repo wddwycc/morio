@@ -1,14 +1,15 @@
-from flask import g
+from flask import g, request
 from morio.model import User, Repository, Course
 from morio.core.error import NotFoundError, SignatureError
 from morio.core.error import JsonException
 
 
-def verify_payload(payload, schema):
+def retrieve_payload(schema):
     from voluptuous import Schema
     from voluptuous import REMOVE_EXTRA
     from voluptuous import MultipleInvalid
 
+    payload = request.get_json()
     if not payload:
         raise JsonException(description='Payload missing')
     schema = Schema(schema, extra=REMOVE_EXTRA)
