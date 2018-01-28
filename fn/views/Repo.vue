@@ -188,16 +188,18 @@
         })
       },
     },
-    mounted: function () {
+    beforeRouteEnter: function (to, from, next) {
       api.getRepo(
-        this.$route.params['username'],
-        this.$route.params['repo_name'],
+        to.params['username'],
+        to.params['repo_name'],
       ).then(resp => {
-        this.repo = resp.data
-        this.settingForm = Vue.util.extend({}, this.repo)
-        this.reloadCards()
+        next(vm => {
+          vm['repo'] = resp.data
+          vm['settingForm'] = Vue.util.extend({}, resp.data)
+          vm.reloadCards()
+        })
       })
-    }
+    },
   }
 </script>
 
