@@ -1,6 +1,6 @@
+import math
 from datetime import datetime
 
-import math
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, DateTime
 from sqlalchemy.orm import relationship
@@ -39,8 +39,8 @@ class Course(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
 
     created_at = Column(DateTime, default=datetime.now, nullable=False)
-    updated_at = Column(
-        DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
+    updated_at = Column(DateTime, default=datetime.now,
+                        onupdate=datetime.now, nullable=False)
 
     progresses = relationship('CourseCardProgress',
                               backref='course', lazy='dynamic')
@@ -114,8 +114,9 @@ class Course(db.Model):
         to_review_measurements = list()
         for item in to_review:
             delta_day = (datetime.now() - item.last_time_grasped).days
-            m = score_for_feel(item.last_feel or CourseCardProgress.FEEL_HARD) * \
-                math.exp(-delta_day / memory_stability(item.hits - 1))
+            feel = item.last_feel or CourseCardProgress.FEEL_HARD
+            m = score_for_feel(feel) \
+                * math.exp(-delta_day / memory_stability(item.hits - 1))
             to_review_measurements.append((m, item))
         to_review_measurements.sort(key=lambda x: x[0])
         to_review = [x[1] for x in to_review_measurements if x[0] < 50]
