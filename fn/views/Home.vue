@@ -72,8 +72,8 @@
     data() {
       return {
         loadingCourses: true,
-        courses: [],
         loadingRepos: true,
+        courses: [],
         repos: [],
         dialogVisible: false,
       }
@@ -85,16 +85,22 @@
     },
     methods: {
       fetchRepos() {
-        api.myRepos().then(resp => {
-          this.repos = resp.data
-          this.loadingRepos = false
-        })
+        api.myRepos()
+          .then(resp => {
+            this.repos = resp.data
+          })
+          .finally(() => {
+            this.loadingRepos = false
+          })
       },
       fetchCourses() {
-        api.myCourses().then(resp => {
-          this.courses = resp.data
-          this.loadingCourses = false
-        })
+        api.myCourses()
+          .then(resp => {
+            this.courses = resp.data
+          })
+          .finally(() => {
+            this.loadingCourses = false
+          })
       },
       delCourse(id) {
         this.$confirm('Are you sure to delete course')
@@ -102,8 +108,6 @@
             api.delCourse(id).then(() => {
               this.fetchCourses()
             })
-          })
-          .catch(_ => {
           })
       }
     },
