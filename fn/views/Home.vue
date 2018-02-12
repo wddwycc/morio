@@ -40,7 +40,8 @@
         <h2>Courses</h2>
         <el-card class="course-cell" v-for="course in courses" :key="course.id">
           <router-link :to="{name: 'Course', params: { id: course.id }}">
-            <el-button type="text">Learn {{ course['repository']['username'] }}/{{ course['repository']['name'] }}</el-button>
+            <el-button v-if="course.name" type="text">{{ course.name }}</el-button>
+            <el-button v-else type="text">Learn {{ course['repository']['username'] }}/{{ course['repository']['name'] }}</el-button>
           </router-link>
           <el-button class="course-cell__del" icon="el-icon-delete" size="mini" type="text" @click="delCourse(course.id)"></el-button>
         </el-card>

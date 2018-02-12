@@ -52,10 +52,14 @@ class Course(db.Model):
                               backref='course', lazy='dynamic')
 
     def to_dict(self):
-        repo = self.repository
         return dict(
             id=self.id,
-            repository=repo.to_dict(),
+            name=self.name,
+            q_sides=self.q_sides.split(','),
+            a_sides=self.a_sides.split(','),
+            daily_new=self.daily_new,
+            daily_review=self.daily_review,
+            repository=self.repository.to_dict(),
         )
 
     def next(self):
