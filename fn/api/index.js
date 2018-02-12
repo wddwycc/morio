@@ -29,6 +29,7 @@ client.interceptors.response.use(response => {
     if (error.response.status === 401) {
     } else if (error.response.status === 403) {
       db.del('authToken')
+      Message.error(msg)
     } else {
       Message.error(msg)
     }
