@@ -186,6 +186,15 @@ def get_courses():
     return jsonify(rv)
 
 
+@bp.route('/courses/<id_>')
+@login_required
+def get_course(id_):
+    rv = Course.query.filter_by(user_id=g.user.id).filter_by(id=id_).first()
+    if not rv:
+        raise NotFoundError
+    return jsonify(rv)
+
+
 @bp.route('/courses', methods=['POST'])
 @login_required
 def create_course():

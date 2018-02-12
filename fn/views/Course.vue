@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="course">
     <div v-if="loading">
       <p>loading...</p>
     </div>
@@ -7,13 +7,13 @@
       <div v-if="card && repo">
         <h1>{{ summary }}</h1>
         <el-card class="box-card">
-          <div>
-            <p class="card__key">{{ repo['side_a_name'] || 'Side A' }}:</p>
-            <p class="card__value">{{ card['side_a'] }}</p>
+          <div v-for="i in course.q_sides">
+            <p class="card__key">{{ repo[`side_${i}_name`] || `Side ${i.toUpperCase()}` }}:</p>
+            <p class="card__value">{{ card[`side_${i}`] }}</p>
           </div>
-          <div v-if="showAnswer">
-            <p class="card__key">{{ repo['side_b_name'] || 'Side B' }}:</p>
-            <p class="card__value">{{ card['side_b'] }}</p>
+          <div v-if="showAnswer" v-for="i in course.a_sides">
+            <p class="card__key">{{ repo[`side_${i}_name`] || `Side ${i.toUpperCase()}` }}:</p>
+            <p class="card__value">{{ card[`side_${i}`] }}</p>
           </div>
         </el-card>
 
@@ -42,16 +42,12 @@
   export default {
     data() {
       return {
+        course: null,
         card: null,
         repo: null,
         showAnswer: false,
         loading: true,
         summary: '',
-      }
-    },
-    computed: {
-      id: function () {
-        return this.$route.params['id']
       }
     },
     methods: {
@@ -61,7 +57,7 @@
         if ((last_choice || last_choice === 0) && this.card) {
           payload = {card_id: this.card.id, feel: last_choice}
         }
-        api.courseNextCard(this.id, payload).then(resp => {
+        api.courseNextCard(this.course.id, payload).then(resp => {
           this.showAnswer = false
           if (resp.data.data) {
             this.card = resp.data.data.card
@@ -76,9 +72,19 @@
         })
       },
     },
-    mounted() {
-      this.next()
-    }
+    beforeRouteEnter: function (to, from, next) {
+      let courseId = to.params['id']
+      api.getCourseById(courseId)
+        .then(resp => {
+          next(vm => {
+            vm['course'] = resp.data
+            vm.next()
+          })
+        })
+        .catch(_ => {
+          return next('/')
+        })
+    },
   }
 </script>
 

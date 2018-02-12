@@ -76,17 +76,22 @@ export default {
   updateRepo: (repo_id, data) => {
     return client.put(`/repos/${repo_id}`, data)
   },
+
   newCard: (data) => {
     return client.post(`/cards`, data)
   },
   delCard: (id) => {
     return client.delete(`/cards/${id}`)
   },
+
   myCourses: () => {
     return client.get('/courses')
   },
   newCourse: (data) => {
     return client.post('/courses', data)
+  },
+  getCourseById: (id) => {
+    return client.get(`/courses/${id}`)
   },
   delCourse: (id) => {
     return client.delete(`/courses/${id}`)
