@@ -25,19 +25,19 @@ client.interceptors.response.use(response => {
   if (!error.response) {
     Message.error(error.message)
   } else {
-    // let msg = error.response.data.msg || error.response.statusText
+    let msg = error.response.data.msg || error.response.statusText
     if (error.response.status === 401) {
+    } else if (error.response.status === 403) {
+      db.del('authToken')
     } else {
-      if (error.response.status === 403) {
-        db.del('authToken')
-      }
+      Message.error(msg)
     }
   }
   return Promise.reject(error)
 });
 
 export default {
-  // user
+  // account related
   me: () => {
     return client.get('/user/me')
   },
@@ -54,31 +54,27 @@ export default {
   getUser: (username) => {
     return client.get(`/users/${username}`)
   },
-  getRepos: (username) => {
+  getUserRepos: (username) => {
     return client.get(`/users/${username}/repos`)
   },
   getRepo: (username, repoName) => {
     return client.get(`/users/${username}/repos/${repoName}`)
   },
-  updateRepo: (repo_id, data) => {
-    return client.put(`/repos/${repo_id}`, data)
+  getRepoById: (id) => {
+    return client.get(`/repos/${id}`)
   },
   getCards: (username, repoName, params) => {
     return client.get(`/users/${username}/repos/${repoName}/cards`, {params: params})
   },
-  // personal query
+  // my
   myRepos: () => {
     return client.get('/repos')
   },
-  myCourses: () => {
-    return client.get('/courses')
-  },
-  courseNextCard: (course_id, data) => {
-    return client.post(`/courses/${course_id}/next`, data)
-  },
-  // updates
   newRepo: (data) => {
     return client.post('/repos', data)
+  },
+  updateRepo: (repo_id, data) => {
+    return client.put(`/repos/${repo_id}`, data)
   },
   newCard: (data) => {
     return client.post(`/cards`, data)
@@ -86,10 +82,16 @@ export default {
   delCard: (id) => {
     return client.delete(`/cards/${id}`)
   },
+  myCourses: () => {
+    return client.get('/courses')
+  },
   newCourse: (data) => {
     return client.post('/courses', data)
   },
   delCourse: (id) => {
     return client.delete(`/courses/${id}`)
+  },
+  courseNextCard: (course_id, data) => {
+    return client.post(`/courses/${course_id}/next`, data)
   },
 }

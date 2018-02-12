@@ -7,7 +7,7 @@
         </ul>
         <div class="menu__right" v-if="!this.$store.state.user.loading">
           <ul class="menu__login" v-if="this.$store.state.user.name">
-            <router-link to="/new" tag="li" class="el-icon-plus dim menu__item"></router-link>
+            <router-link to="/new-repo" tag="li" class="el-icon-plus dim menu__item"></router-link>
             <li class="menu__avatar" :style="{ backgroundImage: `url(${this.$store.state.user.avatar})`}"></li>
 
             <li class="menu__item">

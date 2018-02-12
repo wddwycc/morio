@@ -21,3 +21,7 @@ h2 {
   font-size: var(--size-large);
   padding: 10px 0;
 }
+
+.form {
+  max-width: 460px;
+}

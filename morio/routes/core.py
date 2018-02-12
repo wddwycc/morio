@@ -2,11 +2,14 @@ from flask import Blueprint
 from flask import g
 from flask import jsonify, request
 from sqlalchemy import desc
-from voluptuous import Coerce, Match, Length, Range
+from voluptuous import Coerce, Match, Length, Range, Optional
 from voluptuous import Required, Any, All
 
 from morio.core.auth import login_required, login_optional
-from morio.core.error import ConflictException, NotFoundError, SignatureError
+from morio.core.error import (
+    ConflictException, NotFoundError, SignatureError,
+    BadRequestError,
+)
 from morio.core.pagination import with_pagination
 from morio.model import Repository, Card, User, Course
 from morio.model import db, CourseCardProgress
@@ -102,6 +105,15 @@ def create_repo():
     return jsonify(repo)
 
 
+# todo: private repo can be accessed
+@bp.route('/repos/<id_>')
+def get_repo_by_id(id_):
+    src = Repository.query.get(id_)
+    if not src:
+        raise NotFoundError(description='Repo not found')
+    return jsonify(src)
+
+
 @bp.route('/repos/<id_>', methods=['PUT'])
 @login_required
 def update_repo(id_):
@@ -175,22 +187,29 @@ def get_courses():
 
 
 @bp.route('/courses', methods=['POST'])
-@login_optional
+@login_required
 def create_course():
     schema = {
         Required('repository_id'): int,
+        Required('name'): str,
+        Required('daily_new'): int,
+        Required('daily_review'): int,
+        Required('q_sides'): str,
+        Required('a_sides'): str,
     }
     payload = retrieve_payload(schema)
     repo = Repository.query.get(payload['repository_id'])
     if not repo:
         raise NotFoundError
-    if repo.private:
-        if not g.user:
-            raise NotFoundError
-        if g.user.id != repo.user_id:
-            raise NotFoundError
+    if repo.private and g.user.id != repo.user_id:
+        raise NotFoundError
+    q_sides = payload['q_sides']
+    a_sides = payload['a_sides']
+    if not q_sides or not a_sides:
+        raise BadRequestError(description='Q&A should both has values')
+    # todo: q_sides, a_sides more validation
     course = Course(**payload, user_id=g.user.id)
-    # todo: 做成transaction
+    # todo: make it transaction
     with db.auto_commit():
         db.session.add(course)
     cards = Card.query.filter_by(repository_id=repo.id).all()

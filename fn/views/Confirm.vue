@@ -20,11 +20,13 @@
         this.msg = 'token not specified'
         return
       }
-      api.confirm(token).then(resp => {
-        this.msg = `Thanks ${resp.data.name}, Email confirmed!`
-      }).catch(_ => {
-        this.msg = 'Token invalid, cannot confirm email'
-      })
+      api.confirm(token)
+        .then(resp => {
+          this.msg = `Thanks ${resp.data.name}, Email confirmed!`
+        })
+        .catch(_ => {
+          this.msg = 'Token invalid, cannot confirm email'
+        })
     }
   }
 </script>

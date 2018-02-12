@@ -2,7 +2,7 @@
   <div>
     <h1>New Repository</h1>
 
-    <el-form ref="form" :rules="rules" :model="form" label-width="80px" label-position="right" class="register">
+    <el-form ref="form" :rules="rules" :model="form" label-width="80px" label-position="right" class="form">
       <el-form-item label="Name" prop="name" required>
         <el-input v-model="form.name"></el-input>
       </el-form-item>

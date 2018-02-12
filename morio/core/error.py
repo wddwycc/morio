@@ -23,9 +23,15 @@ class JsonException(HTTPException):
         return [('Content-Type', 'application/json')]
 
 
+class BadRequestError(JsonException):
+    code = 400
+    error = 'invalid_payload'
+    description = 'Invalid Payload'
+
+
 class SignatureMissingError(JsonException):
     code = 401
-    error = 'invalid_signature'
+    error = 'missing_signature'
     description = 'Signature required'
 
 

@@ -55,7 +55,7 @@
           this.user = resp.data
           this.loadingUser = false
         })
-        api.getRepos(this.username).then(resp => {
+        api.getUserRepos(this.username).then(resp => {
           this.repos = resp.data
           this.loadingRepos = false
         })

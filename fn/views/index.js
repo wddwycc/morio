@@ -2,10 +2,12 @@ import Home from './Home.vue'
 import Login from './Login.vue'
 import Register from './Register.vue'
 import Confirm from './Confirm.vue'
-import Repo from './Repo.vue'
 import NewRepo from './NewRepo.vue'
+import Repo from './Repo.vue'
 import User from './User.vue'
+import NewCourse from './NewCourse.vue'
 import Course from './Course.vue'
+import NotFound from './404.vue'
 
 
 const routes = [
@@ -32,7 +34,7 @@ const routes = [
   },
   // core
   {
-    path: '/new',
+    path: '/new-repo',
     name: 'NewRepo',
     component: NewRepo,
   },
@@ -47,10 +49,16 @@ const routes = [
     component: Repo,
   },
   {
+    path: '/new-course',
+    name: 'NewCourse',
+    component: NewCourse,
+  },
+  {
     path: '/course/:id',
     name: 'Course',
     component: Course,
   },
+  { path: '*', component: NotFound }
 ];
 
 export default {

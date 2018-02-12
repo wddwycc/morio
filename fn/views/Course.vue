@@ -30,7 +30,7 @@
         </div>
       </div>
       <div v-else>
-        <h1>🎉 You have no card to learn today</h1>
+        <h1>🎉 You have no card to learn today, come back tomorrow!</h1>
       </div>
     </div>
   </div>

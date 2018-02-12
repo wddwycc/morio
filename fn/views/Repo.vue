@@ -50,7 +50,7 @@
           <empty text="No card" v-else></empty>
         </el-tab-pane>
         <el-tab-pane v-if="isOwner" label="Setting" name="setting">
-          <el-form ref="settingForm" :model="settingForm" label-width="80px" label-position="right" class="register">
+          <el-form ref="settingForm" :model="settingForm" label-width="80px" label-position="right" class="form">
             <el-form-item label="Private">
               <el-switch v-model="settingForm.private"></el-switch>
             </el-form-item>
@@ -176,10 +176,7 @@
         })
       },
       newCourse: function () {
-        api.newCourse({repository_id: this.repo.id}).then(() => {
-          Message.success('created new course')
-          this.$router.push('/')
-        })
+        this.$router.push(`/new-course?repoId=${this.repo.id}`)
       },
       onSubmitSetting: function () {
         api.updateRepo(this.repo.id, this.settingForm).then(resp => {

@@ -2,7 +2,7 @@ import math
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, DateTime
+from sqlalchemy import Integer, DateTime, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import func
 
@@ -34,13 +34,19 @@ def memory_stability(review_times):
 
 class Course(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    repository_id = Column(
-        Integer, ForeignKey('repository.id'), nullable=False)
+    repository_id = Column(Integer, ForeignKey('repository.id'),
+                           nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
 
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(DateTime, default=datetime.now,
                         onupdate=datetime.now, nullable=False)
+
+    name = Column(String)
+    q_sides = Column(String)  # saperate by ,
+    a_sides = Column(String)
+    daily_new = Column(Integer, nullable=False)
+    daily_review = Column(Integer, nullable=False)
 
     progresses = relationship('CourseCardProgress',
                               backref='course', lazy='dynamic')
