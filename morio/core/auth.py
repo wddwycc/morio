@@ -16,7 +16,7 @@ def login_required(f):
         except (DecodeError, InvalidTokenError):
             raise SignatureError()
         except ExpiredSignatureError:
-            raise SignatureError(description='Signature expired')
+            raise SignatureError(desc='Signature expired')
         user = User.query.get(user_id)
         if not user:
             return SignatureError()

@@ -11,12 +11,12 @@ def retrieve_payload(schema):
 
     payload = request.get_json()
     if not payload:
-        raise JsonException(description='Payload missing')
+        raise JsonException(desc='Payload missing')
     schema = Schema(schema, extra=REMOVE_EXTRA)
     try:
         payload = schema(payload)
     except MultipleInvalid as e:
-        raise JsonException(description=e.msg)
+        raise JsonException(desc=e.msg)
     return payload
 
 
@@ -28,12 +28,12 @@ def if_email(email):
 def retrieve_user_repo(username, repo_name):
     user = User.query.filter_by(name=username).first()
     if not user:
-        raise NotFoundError(description='User not found')
+        raise NotFoundError(desc='User not found')
     repo = Repository.query.filter_by(user_id=user.id, name=repo_name).first()
     if not repo or (
         repo.private and (not g.user or g.user.id != repo.user_id)
     ):
-        raise NotFoundError(description='Repo not found')
+        raise NotFoundError(desc='Repo not found')
     return user, repo
 
 

@@ -36,10 +36,10 @@ def register():
     payload = retrieve_payload(schema)
     user = User.query.filter_by(name=payload['name']).first()
     if user:
-        raise ConflictException(description='username already used')
+        raise ConflictException(desc='username already used')
     user = User.query.filter_by(email=payload['email']).first()
     if user:
-        raise ConflictException(description='email already used')
+        raise ConflictException(desc='email already used')
 
     avatar = pagan.Avatar(payload['name'], pagan.SHA512)
     upload_folder = current_app.config['UPLOAD_FOLDER']
@@ -82,9 +82,9 @@ def login():
     else:
         user = User.query.filter_by(name=payload['user']).first()
     if not user:
-        raise SignatureError(description='user not exist')
+        raise SignatureError(desc='user not exist')
     if not user.verify_password(payload['password']):
-        raise SignatureError(description='wrong password')
+        raise SignatureError(desc='wrong password')
     resp = jsonify(user)
     resp.headers['Authorization'] = user.gen_auth_token()
     return resp
@@ -98,7 +98,7 @@ def confirm_email():
     payload = retrieve_payload(schema)
     user = User.verify_email_token(payload['token'])
     if not user:
-        raise NotFoundError(description='Token invalid')
+        raise NotFoundError(desc='Token invalid')
     with db.auto_commit():
         user.email_confirmed = True
         db.session.add(user)

@@ -22,7 +22,7 @@ bp = Blueprint('core', __name__)
 def get_user(name):
     src = User.query.filter_by(name=name).first()
     if not src:
-        raise NotFoundError(description='User not found')
+        raise NotFoundError(desc='User not found')
     return jsonify(src)
 
 
@@ -98,7 +98,7 @@ def create_repo():
         .filter_by(user_id=g.user.id, name=payload['name']) \
         .first()
     if src:
-        raise ConflictException(description='repo already exist')
+        raise ConflictException(desc='repo already exist')
     repo = Repository(user_id=g.user.id, **payload)
     with db.auto_commit():
         db.session.add(repo)
@@ -110,7 +110,7 @@ def create_repo():
 def get_repo_by_id(id_):
     src = Repository.query.get(id_)
     if not src:
-        raise NotFoundError(description='Repo not found')
+        raise NotFoundError(desc='Repo not found')
     return jsonify(src)
 
 
@@ -121,7 +121,7 @@ def update_repo(id_):
     src = Repository.query.filter_by(id=id_, user_id=g.user.id) \
         .first()
     if not src:
-        raise NotFoundError(description='Repo not found')
+        raise NotFoundError(desc='Repo not found')
     with db.auto_commit():
         for key, value in payload.items():
             setattr(src, key, value)
@@ -167,7 +167,7 @@ def delete_repo_card(card_id):
     if not card:
         raise NotFoundError
     if card.repository.user_id != g.user.id:
-        raise SignatureError(description='Permission denied')
+        raise SignatureError(desc='Permission denied')
     with db.auto_commit():
         CourseCardProgress.query.filter_by(card_id=card.id).delete()
         db.session.delete(card)
@@ -215,7 +215,7 @@ def create_course():
     q_sides = payload['q_sides']
     a_sides = payload['a_sides']
     if not q_sides or not a_sides:
-        raise BadRequestError(description='Q&A should both has values')
+        raise BadRequestError(desc='Q&A should both has values')
     # todo: q_sides, a_sides more validation
     course = Course(**payload, user_id=g.user.id)
     # todo: make it transaction
